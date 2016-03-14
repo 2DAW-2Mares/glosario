@@ -10,43 +10,25 @@ angular.module('app.routes', [])
     
   
 
-      .state('tabsController.cameraTabDefaultPage', {
-    url: '/page2',
-    views: {
-      'tab1': {
-        templateUrl: 'templates/cameraTabDefaultPage.html',
-        controller: 'cameraTabDefaultPageCtrl'
-      }
-    }
-  })
-
-  .state('tabsController.cartTabDefaultPage', {
-    url: '/page3',
-    views: {
-      'tab2': {
-        templateUrl: 'templates/cartTabDefaultPage.html',
-        controller: 'cartTabDefaultPageCtrl'
-      }
-    }
-  })
-
-  .state('tabsController.cloudTabDefaultPage', {
-    url: '/page4',
-    views: {
-      'tab3': {
-        templateUrl: 'templates/cloudTabDefaultPage.html',
-        controller: 'cloudTabDefaultPageCtrl'
-      }
-    }
-  })
-
-  .state('tabsController', {
+      .state('pagina1', {
     url: '/page1',
-    templateUrl: 'templates/tabsController.html',
+    templateUrl: 'templates/pagina1.html',
+    controller: 'pagina1Ctrl'
+  })
+
+  .state('no', {
+    url: '/',
+    templateUrl: 'templates/no.html',
     abstract:true
   })
 
-$urlRouterProvider.otherwise('/page1/page2')
+  .state('pagina2', {
+    url: '/page2',
+    templateUrl: 'templates/pagina2.html',
+    controller: 'pagina2Ctrl'
+  })
+
+$urlRouterProvider.otherwise('/page1')
 
   
 
