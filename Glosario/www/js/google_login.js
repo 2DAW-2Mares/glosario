@@ -1,38 +1,4 @@
-angular.module('starter.services', [])
-  .factory('ListFactory', function($http) {
-
-    var list = [];
-    var listStore = localStorage.getItem("list");
-    if (listStore != null && listStore != '' && angular.isArray(angular.fromJson(listStore))) {
-      list = angular.fromJson(listStore);
-    }
-    var listSrv = {
-      setList: function(newList) {
-        list = newList;
-        localStorage.setItem("list", angular.toJson(list));
-        return true;
-      },
-      getList: function() {
-      	$http.get("http://jsonplaceholder.typicode.com/todos")
-		.success(function(data){
-			list = data;
-			console.log(list);
-		})
-		.error(function(err){
-			console.log(err);
-		});
-
-        if (list != null) {
-          return list;
-        } else {
-          return [];
-        }
-      }
-    };
-    return listSrv;
-  });
-
-  var googleLoginService = angular.module('GoogleLoginService', ['ngStorage']);
+var googleLoginService = angular.module('GoogleLoginService', ['ngStorage']);
 googleLoginService.factory('timeStorage', ['$localStorage', function ($localStorage) {
         var timeStorage = {};
         timeStorage.cleanUp = function () {
@@ -86,9 +52,9 @@ googleLoginService.factory('googleLogin', [
     function ($http, $q, $interval, $log, timeStorage) {
         var service = {};
         service.access_token = false;
-        service.redirect_url = 'http://127.0.0.1:81/google_demo/www/';
-        service.client_id = '789799094420-uuak74v7em9o9a2ek9fd5v1hiki9knmi.apps.googleusercontent.com';
-        service.secret = 'n_h_eHTdXLn2AUeKSy6NVaYk';
+        service.redirect_url = 'http://localhost:8100';
+        service.client_id = '310617402015-hp121f8gb6vvkfvc31ttesr481b2c0kc.apps.googleusercontent.com';
+        service.secret = 'N4RYg9exlRkLT4DuiZLrbnLy';
         service.scope = 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/plus.me';
         service.gulp = function (url, name) {
             url = url.substring(url.indexOf('?') + 1, url.length);
@@ -202,6 +168,7 @@ googleLoginService.factory('googleLogin', [
                     scope: ''
                 }
             });
+            var miToken = 'cabron';
             var context = this;
             http.then(function (data) {
                 $log.debug(data);
@@ -212,6 +179,7 @@ googleLoginService.factory('googleLogin', [
                 if (access_token) {
                     $log.info('Access Token :' + access_token);
                     context.getUserInfo(access_token, def);
+                    
                 } else {
                     def.reject({error: 'Access Token Not Found'});
                 }

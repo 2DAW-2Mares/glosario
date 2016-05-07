@@ -5,23 +5,52 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers','ngCordova'])
+angular.module('starter', ['ionic','starter.controllers','GoogleLoginService'])
 
-  .config(function($stateProvider, $urlRouterProvider) {
-  
-    // Ionic uses AngularUI Router which uses the concept of states
-    // Learn more here: https://github.com/angular-ui/ui-router
-    // Set up the various states which the app can be in.
-    // Each state's controller can be found in controllers.js
-    $stateProvider
-  
-    .state('ListExample', {
+  .config(function($httpProvider, $stateProvider, $urlRouterProvider) {
+
+  $stateProvider
+    
+    .state('login', {
+    url: '/login',
+    templateUrl: 'templates/login.html',
+    controller: 'google'
+  })
+
+  .state('ListExample', {
       url: '/list',
       templateUrl: 'templates/listado.html',
       controller: 'listExampleCtrl'
-        });
-  
-    // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/list');
-  
+  })
+
+  .state('consultar', {
+      url: '/consultar',
+      templateUrl: 'templates/consultar.html',
+      controller: 'listExampleCtrl'
   });
+
+$urlRouterProvider.otherwise('/login')
+/*
+$httpProvider.interceptors.push(['$q', '$location', '$localStorage', function($q, $location, $localStorage) {
+        return {
+                'request': function (config) {
+                    config.headers = config.headers || {};
+                    var mami = $localStorage.timeStorage;
+                    console.log('Hola: '+ mami);
+                    
+                    if ($localStorage.token) {
+                        config.headers.Authorization = 'Bearer ' + $localStorage.token;
+                    }
+                    return config;
+                },
+                'responseError': function(response) {
+                    if(response.status === 401 || response.status === 403) {
+                        $location.path('/login');
+                    }
+                    return $q.reject(response);
+                }
+            };
+        }]);
+*/
+})
+

@@ -1,6 +1,6 @@
 
  angular.module('starter.controllers', [])
-  	.controller('listExampleCtrl', function( $scope, $ionicModal, $http) {
+  	.controller('listExampleCtrl', function(googleLogin, $scope, $ionicModal, $http) {
 
 	    // Load the add / change dialog from the given template URL
 	    $ionicModal.fromTemplateUrl('templates/add-change-dialog.html', function(modal) {
@@ -52,10 +52,21 @@
 	        }
 	      }];
 
+	      var mitoken = googleLogin.validateToken();
+	      console.log('Hola: '+ mitoken);
+
+
+		var config = {
+			headers:  {
+		        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
+		        "Access-Control-Allow-Origin": '*'
+			}
+		}
+
 	    // Get list
 	    $scope.listado =[];
 
-		$http.get("http://localhost:1337/termino")
+		$http.get("http://localhost:1337/termino", config)
 		.success(function(data){
 			$scope.listado = data;
 			console.log(data);
@@ -66,3 +77,16 @@
 
 
 	})
+
+  	.controller('google', function ($scope, googleLogin) {
+            $scope.google_data = {};
+            $scope.login = function () {
+                var promise = googleLogin.startLogin();
+                promise.then(function (data) {
+                    $scope.google_data = data;
+                }, function (data) {
+                    $scope.google_data = data;
+                });
+            }
+     });
+

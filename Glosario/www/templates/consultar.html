@@ -1,0 +1,17 @@
+<!--
+  This template loads for the 'ListExample' state (app.js)
+-->
+	<ion-pane>
+      <ion-header-bar class="bar-positive">
+        <h1 class="title">Ejemplo de listado</h1>
+      </ion-header-bar>
+      <ion-content>
+        <ion-item>
+		  <ion-label>Gender</ion-label>
+		  <ion-select [(ngModel)]="gender">
+		    <ion-option value="f" checked="true">Female</ion-option>
+		    <ion-option value="m">Male</ion-option>
+		  </ion-select>
+		</ion-item>
+      </ion-content>
+    </ion-pane>
