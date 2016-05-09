@@ -1,6 +1,6 @@
 
  angular.module('starter.controllers', [])
-  	.controller('listExampleCtrl', function(googleLogin, $scope, $ionicModal, $http) {
+  	.controller('ultimosCtrl', function(googleLogin, $scope, $ionicModal, $http) {
 
 	    // Load the add / change dialog from the given template URL
 	    $ionicModal.fromTemplateUrl('templates/add-change-dialog.html', function(modal) {
@@ -88,5 +88,19 @@
                     $scope.google_data = data;
                 });
             }
-     });
+     })
 
+
+  	.controller('consultarCtrl', function ($scope, $location) {
+        $scope.selectables = [
+		    { enunciado: "Ultimos terminos", url : "ultimos"},
+		    { enunciado: "Por materia", url : "2"},
+		    { enunciado: "Busqueda directa", url : "3"},
+		    { enunciado: "Por alumno", url : "4"}
+		];
+
+		$scope.getOpt = function(option){
+    	return option.url;
+		};
+
+     });

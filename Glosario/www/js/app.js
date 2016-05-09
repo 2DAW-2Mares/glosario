@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','starter.controllers','GoogleLoginService'])
+angular.module('starter', ['ionic','ionic-modal-select','starter.controllers','GoogleLoginService'])
 
   .config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
@@ -17,19 +17,19 @@ angular.module('starter', ['ionic','starter.controllers','GoogleLoginService'])
     controller: 'google'
   })
 
-  .state('ListExample', {
-      url: '/list',
-      templateUrl: 'templates/listado.html',
-      controller: 'listExampleCtrl'
+  .state('listadoUltimos', {
+      url: '/ultimos',
+      templateUrl: 'templates/ultimos.html',
+      controller: 'ultimosCtrl'
   })
 
   .state('consultar', {
       url: '/consultar',
       templateUrl: 'templates/consultar.html',
-      controller: 'listExampleCtrl'
+      controller: 'consultarCtrl'
   });
 
-$urlRouterProvider.otherwise('/login')
+//$urlRouterProvider.otherwise('/login')
 /*
 $httpProvider.interceptors.push(['$q', '$location', '$localStorage', function($q, $location, $localStorage) {
         return {

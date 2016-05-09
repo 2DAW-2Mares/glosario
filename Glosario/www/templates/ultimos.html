@@ -1,18 +1,13 @@
 <!--
   This template loads for the 'ListExample' state (app.js)
 -->
-	<ion-header-bar
-  		title="Listado de Terminos" 
-  		left-buttons="leftButtons" 
-  		right-buttons="rightButtons" 
-  		type="bar-dark" 
-  		align-title="center">
-	</ion-header-bar>
 
-	<ion-content has-header="true">
+<ion-view id="">
+    <ion-content padding="true" class="has-header" has-header="true">
+    	<h1 class="text-center" style="color:#000000;">ULTIMOS TERMINOS</h1>
 		<ion-list option-buttons="itemButtons" can-swipe="true">
 			<label class="item item-divider">
-    			List
+    			<b>Listado</b>
   			</label>
   			<ion-item ng-if="list.length == 0">
 				Press <i class="icon ion-ios7-plus-outline"></i> to add item
@@ -23,3 +18,4 @@
 			</ion-item>
 		</ion-list>
 	</ion-content>
+</ion-view>
