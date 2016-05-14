@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','ionic-modal-select','starter.controllers','GoogleLoginService'])
+angular.module('starter', ['ionic','ionic-modal-select','starter.controllers','starter.services','GoogleLoginService'])
 
   .config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
@@ -17,17 +17,29 @@ angular.module('starter', ['ionic','ionic-modal-select','starter.controllers','G
     controller: 'google'
   })
 
-  .state('listadoUltimos', {
+  .state('consultar', {
+      url: '/consultar',
+      templateUrl: 'templates/consultar.html',
+      controller: 'consultarCtrl'
+  })
+
+    .state('listadoUltimos', {
       url: '/ultimos',
       templateUrl: 'templates/ultimos.html',
       controller: 'ultimosCtrl'
   })
 
-  .state('consultar', {
-      url: '/consultar',
-      templateUrl: 'templates/consultar.html',
-      controller: 'consultarCtrl'
-  });
+    .state('listadoMateria', {
+      url: '/materia',
+      templateUrl: 'templates/materia.html',
+      controller: 'materiaCtrl'
+  })
+
+  .state('terminosPorMateria', {
+      url: '/terminosPorMateria',
+      templateUrl: 'templates/terminosPorMateria.html',
+      controller: 'terminosPorMateriaCtrl'
+  })
 
 //$urlRouterProvider.otherwise('/login')
 /*
@@ -52,5 +64,17 @@ $httpProvider.interceptors.push(['$q', '$location', '$localStorage', function($q
             };
         }]);
 */
-})
+  })
+  .run(function($ionicPlatform) {
+    $ionicPlatform.ready(function() {
+      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+      // for form inputs)
+      if(window.cordova && window.cordova.plugins.Keyboard) {
+        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      }
+      if(window.StatusBar) {
+        StatusBar.styleDefault();
+      }
+    });
+  })
 

@@ -38,7 +38,21 @@
       .manual-remove-top-padding .scroll{
         padding-top:0px !important;
       }
-    </style>
+
+      .animated{
+        opacity: 1;
+        max-height: auto;
+        overflow: hidden;
+        -webkit-transition: all 2s; /* Safari */
+          transition: all 2s;
+      }
+      .animated.ng-hide li{
+        opacity: 0;
+        max-height: 0px !important;
+        overflow: block !important;
+      }
+      
+  </style>
   
   <body ng-app="starter" animation="slide-left-right-ios7">
 

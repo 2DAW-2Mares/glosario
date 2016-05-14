@@ -10,13 +10,28 @@
               <strong>Glosario</strong>
           </p>
       </div>
-      
-      <button class="button button-positive button-block" modal-select="" ng-model="someModel" options="selectables" modal-title="Seleccione una Opción" option-getter="getOpt(option)">
-          Selecciona una Opción
+
+      <div>
+        <button class="button button-positive button-block" modal-select="" ng-model="someModel" options="selectables" modal-title="Seleccione una Opción" option-getter="getOpt(option)">
+            Selecciona una Opción
+            <div class="option">
+             {{option.enunciado}}
+            </div>
+        </button>
+      </div>
+
+      <div ng-show="someModel == 'terminosPorMateria'">
+        <button class="button button-positive button-block" modal-select="" ng-model="misMaterias" options="materiasElegidas" modal-title="Seleccione una Materia" option-getter="getMaterias(option)" on-select="miSeleccion(newValue, oldValue)">
+          Selecciona una Materia
           <div class="option">
-           {{option.enunciado}}
+           {{ option.ensenanza }}
           </div>
-      </button>
-      <a type="button" href="#/{{someModel}}" style="font-weight:bold;" class="button button-dark">Consultar</a>
+        </button>
+         {{misMaterias}}
+      </div>
+
+      <a type="button" href="#/{{someModel}}" style="font-weight:bold;" class="button button-dark" ng-model="newinsert.idMateria">Consultar</a>
+     
+
     </ion-content>
 </ion-view>

@@ -91,10 +91,12 @@
      })
 
 
-  	.controller('consultarCtrl', function ($scope, $location) {
+  	.controller('consultarCtrl', function ($scope,$rootScope, $http, $ionicModal, $location, listadoDeMaterias) {
+
+
         $scope.selectables = [
 		    { enunciado: "Ultimos terminos", url : "ultimos"},
-		    { enunciado: "Por materia", url : "2"},
+		    { enunciado: "Por materia", url : "terminosPorMateria"},
 		    { enunciado: "Busqueda directa", url : "3"},
 		    { enunciado: "Por alumno", url : "4"}
 		];
@@ -103,4 +105,100 @@
     	return option.url;
 		};
 
-     });
+		var config = {
+			headers:  {
+		        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
+		        "Access-Control-Allow-Origin": '*'
+			}
+		}
+
+		$scope.materiasElegidas = [];
+
+		$http.get("http://localhost:1337/materia", config)
+		.success(function(data){
+			$scope.materias = data;
+			$scope.materiasElegidas = data;
+			console.log(data);
+		})
+		.error(function(err){
+			console.log(err);
+		});
+		
+		$scope.getMaterias = function(option){
+    		return option.id;
+		};
+
+		$scope.miSeleccion = function(newValue, oldValue){
+
+			$scope.loquesea = JSON.stringify(newValue);
+			listadoDeMaterias.datosGlobales.idMateria = $scope.loquesea;
+		}
+		
+	
+
+		
+
+     })
+
+  	.controller('materiaCtrl', function($scope, $ionicModal, $http, $location, listadoDeMaterias) {
+
+  		var config = {
+			headers:  {
+		        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
+		        "Access-Control-Allow-Origin": '*'
+			}
+		}
+  		// Obtener materias
+  		$scope.someModel = null;
+	    $scope.materias =[];
+
+	    $scope.miMateriaSeleccionada={ id:0};
+		
+		console.log($scope.miMateriaSeleccionada);
+
+		$http.get("http://localhost:1337/materia", config)
+		.success(function(data){
+			$scope.materias = data;
+			//listadoDeMaterias.datosGlobales.datos = data;
+			console.log(data);
+		})
+		.error(function(err){
+			console.log(err);
+		});
+
+
+
+		//listadoDeMaterias.datosGlobales.datos = $scope.miMateriaSeleccionada;
+
+  	})
+
+  	.controller('terminosPorMateriaCtrl',
+  		function($scope, $ionicModal, $http, listadoDeMaterias) {
+
+
+
+
+  		$scope.idMateria2 = listadoDeMaterias.datosGlobales.idMateria;
+		//console.log($scope.idMateria2.idMateria);
+
+  		var config = {
+			headers:  {
+		        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
+		        "Access-Control-Allow-Origin": '*'
+			}
+		}
+  		// Obtener materias
+  		
+  		var materias;
+	    $scope.terminos =[];
+
+		$http.get("http://localhost:1337/materia/"+$scope.idMateria2+"/ultimos", config)
+		.success(function(data){
+			$scope.terminos = data;
+			console.log(data);
+		})
+		.error(function(err){
+			console.log(err);
+		});
+		
+  	});
