@@ -41,6 +41,12 @@ angular.module('starter', ['ionic','ionic-modal-select','starter.controllers','s
       controller: 'terminosPorMateriaCtrl'
   })
 
+  .state('definiciones', {
+      url: '/definiciones',
+      templateUrl: 'templates/definiciones.html',
+      controller: 'definicionesCtrl'
+  })
+
 //$urlRouterProvider.otherwise('/login')
 /*
 $httpProvider.interceptors.push(['$q', '$location', '$localStorage', function($q, $location, $localStorage) {

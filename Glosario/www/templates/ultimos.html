@@ -13,9 +13,13 @@
 				Press <i class="icon ion-ios7-plus-outline"></i> to add item
 			</ion-item>
 			<!--  -->
-			<ion-item ng-repeat="termino in listado">
-	  					{{ termino.nombre }}
+			<ion-item ng-repeat="termino in listado" ng-model="terminoSelecionado" ui-sref="definiciones">		
+
+	  			 {{ termino.id }} - {{ termino.nombre }}
+
 			</ion-item>
+
+				{{terminoSelecionado.id}}
 		</ion-list>
 	</ion-content>
 </ion-view>

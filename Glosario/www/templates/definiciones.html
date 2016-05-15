@@ -4,7 +4,7 @@
 
 <ion-view id="">
     <ion-content padding="true" class="has-header" has-header="true">
-    	
+    	<h1 class="text-center" style="color:#000000;" ng-model="nombreTermino">{{nombreTermino}}</h1>
 		<ion-list option-buttons="itemButtons" can-swipe="true">
 			<label class="item item-divider">
     			<b>Listado</b>
@@ -13,10 +13,10 @@
 				Press <i class="icon ion-ios7-plus-outline"></i> to add item
 			</ion-item>
 			<!--  -->
-			<ion-item ng-repeat="termino in terminos" href="#/terminosPorMateria" ng-model="idMateria2.datosGlobales">
+			<ion-item ng-repeat="definicion in definiciones">		
 
-	    			{{ termino.nombre }}
-	
+	  			{{ definicion.definicion }}
+
 			</ion-item>
 		</ion-list>
 	</ion-content>

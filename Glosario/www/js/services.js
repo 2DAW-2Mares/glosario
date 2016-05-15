@@ -3,5 +3,11 @@ angular.module('starter.services', [])
 
     return {datosGlobales: {} };
     
+})
+
+.factory('ServicioDefiniciones', function() {
+
+    return {datosGlobales: {} };
+    
 });
 

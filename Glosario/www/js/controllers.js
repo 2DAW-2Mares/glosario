@@ -1,6 +1,6 @@
 
  angular.module('starter.controllers', [])
-  	.controller('ultimosCtrl', function(googleLogin, $scope, $ionicModal, $http) {
+  	.controller('ultimosCtrl', function(googleLogin, $scope, $ionicModal, $http, $location, ServicioDefiniciones) {
 
 	    // Load the add / change dialog from the given template URL
 	    $ionicModal.fromTemplateUrl('templates/add-change-dialog.html', function(modal) {
@@ -52,9 +52,6 @@
 	        }
 	      }];
 
-	      var mitoken = googleLogin.validateToken();
-	      console.log('Hola: '+ mitoken);
-
 
 		var config = {
 			headers:  {
@@ -63,7 +60,6 @@
 			}
 		}
 
-	    // Get list
 	    $scope.listado =[];
 
 		$http.get("http://localhost:1337/termino", config)
@@ -78,20 +74,7 @@
 
 	})
 
-  	.controller('google', function ($scope, googleLogin) {
-            $scope.google_data = {};
-            $scope.login = function () {
-                var promise = googleLogin.startLogin();
-                promise.then(function (data) {
-                    $scope.google_data = data;
-                }, function (data) {
-                    $scope.google_data = data;
-                });
-            }
-     })
-
-
-  	.controller('consultarCtrl', function ($scope,$rootScope, $http, $ionicModal, $location, listadoDeMaterias) {
+  	.controller('consultarCtrl', function ($scope, $http, $ionicModal, $location, listadoDeMaterias, ServicioDefiniciones) {
 
 
         $scope.selectables = [
@@ -112,6 +95,40 @@
 			}
 		}
 
+		/*-- OPCION 1: Ultimos --*/
+
+
+		$scope.listado =[];
+
+		$http.get("http://localhost:1337/termino", config)
+		.success(function(data){
+			$scope.listado = data;
+			console.log(data);
+		})
+		.error(function(err){
+			console.log(err);
+		});
+
+		$scope.getTerminos = function(option){
+
+			return option;
+    		//return "nombre:"+option.nombre +",id:"+ option.id;
+		};
+
+		$scope.miSeleccionTerminos = function(newValue, oldValue){
+
+			$scope.idTermino = newValue.id;
+			$scope.nombreTermino = newValue.nombre;
+
+			console.log($scope.idTermino + $scope.nombreTermino);
+
+			ServicioDefiniciones.datosGlobales.idTermino = $scope.idTermino;
+			ServicioDefiniciones.datosGlobales.nombreTermino = $scope.nombreTermino;
+		}
+
+
+		/*-- OPCION 2: Por Materias --*/
+
 		$scope.materiasElegidas = [];
 
 		$http.get("http://localhost:1337/materia", config)
@@ -130,8 +147,8 @@
 
 		$scope.miSeleccion = function(newValue, oldValue){
 
-			$scope.loquesea = JSON.stringify(newValue);
-			listadoDeMaterias.datosGlobales.idMateria = $scope.loquesea;
+			$scope.idMateriaSeleccionada = JSON.stringify(newValue);
+			listadoDeMaterias.datosGlobales.idMateria = $scope.idMateriaSeleccionada;
 		}
 		
 	
@@ -178,7 +195,7 @@
 
 
 
-  		$scope.idMateria2 = listadoDeMaterias.datosGlobales.idMateria;
+  		$scope.idMateria2 = listadoDeMaterias.datosGlobales;
 		//console.log($scope.idMateria2.idMateria);
 
   		var config = {
@@ -200,5 +217,48 @@
 		.error(function(err){
 			console.log(err);
 		});
-		
-  	});
+
+  	})
+
+
+  	.controller('definicionesCtrl',
+  		function($scope, $ionicModal, $http, ServicioDefiniciones) {
+
+
+  		$scope.idTermino = ServicioDefiniciones.datosGlobales.idTermino;
+  		$scope.nombreTermino = ServicioDefiniciones.datosGlobales.nombreTermino;
+
+
+  		var config = {
+			headers:  {
+		        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
+		        "Access-Control-Allow-Origin": '*'
+			}
+		}
+  		// Obtener definiciones
+  		
+	    $scope.definiciones =[];
+
+		$http.get("http://localhost:1337/termino/"+$scope.idTermino+"/definiciones", config)
+		.success(function(data){
+			$scope.definiciones = data;
+			console.log(data);
+		})
+		.error(function(err){
+			console.log(err);
+		});
+
+  	})
+
+
+  	.controller('google', function ($scope, googleLogin) {
+            $scope.google_data = {};
+            $scope.login = function () {
+                var promise = googleLogin.startLogin();
+                promise.then(function (data) {
+                    $scope.google_data = data;
+                }, function (data) {
+                    $scope.google_data = data;
+                });
+            }
+     })
