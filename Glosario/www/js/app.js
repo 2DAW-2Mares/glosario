@@ -29,10 +29,10 @@ angular.module('starter', ['ionic','ionic-modal-select','starter.controllers','s
       controller: 'ultimosCtrl'
   })
 
-    .state('listadoMateria', {
-      url: '/materia',
-      templateUrl: 'templates/materia.html',
-      controller: 'materiaCtrl'
+    .state('busquedaDirecta', {
+      url: '/busquedaDirecta',
+      templateUrl: 'templates/busquedaDirecta.html',
+      controller: 'busquedaDirectaCtrl'
   })
 
   .state('terminosPorMateria', {

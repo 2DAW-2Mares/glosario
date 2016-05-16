@@ -6,7 +6,8 @@
       <h1 id="pagina1-heading1" style="color:#000000;">GLOSARIO</h1>
       <div class="button-bar"></div>
       <div id="markdown1" style="color:#000000;">
-          <p>Bienvenido a <b>Glosario</b>
+          <p>Bienvenido a
+              <strong>Glosario</strong>
           </p>
       </div>
 
@@ -22,6 +23,22 @@
 
       </div>
 
+      <!-- OPCION 1: Ultimos -->
+
+      <div ng-show="listadoDeConsulta.url == 'ultimos'">
+        <button class="button button-positive" modal-select="" ng-model="ultimosTerminos" options="listado" modal-title="Seleccione una Materia" option-getter="getTerminos(option)" on-select="miSeleccionTerminos(newValue, oldValue)">
+          Selecciona un término
+          <div class="option">
+           {{ option.nombre }}
+          </div>
+        </button>
+
+        <h4 class="text-center" style="color:#000000;">{{ultimosTerminos.nombre}}</h4>
+
+      </div>
+
+      <!--  -->
+
       <!-- OPCION 2: Por Materias -->
 
       <div ng-show="listadoDeConsulta.url == 'terminosPorMateria'">
@@ -34,11 +51,25 @@
 
         <h4 class="text-center" style="color:#000000;">{{misMaterias.materia}}</h4>
 
+        <div ng-show="misMaterias.materia != null">
+
+          <button class="button button-positive" modal-select="" ng-model="misTerminos" options="terminosElegidos" modal-title="Seleccione una Opción" option-getter="getTerminosPorMateria(option)" >
+            Selecciona un término
+            <div class="option">
+             {{ option.nombre }}
+            </div>
+          </button>
+
+          <h4 class="text-center" style="color:#000000;">{{terminosElegidos.nombre}}</h4>
+
+        </div>
+
       </div>
 
-      <!-- -->
+      <button ui-sref="definiciones" style="font-weight:bold;" class="button button-dark">Consultar definicion</button>
 
-      <a type="button" href="#/{{listadoDeConsulta.url}}" style="font-weight:bold;" class="button button-dark">Consultar</a>
+      <!-- <a type="button" href="#/{{listadoDeConsulta}}" style="font-weight:bold;" class="button button-dark">Consultar</a> -->
      
+
     </ion-content>
 </ion-view>

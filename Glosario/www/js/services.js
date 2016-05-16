@@ -5,9 +5,10 @@ angular.module('starter.services', [])
     
 })
 
-.factory('ServicioDefiniciones', function() {
+
+.factory('terminoElegido', function() {
 
     return {datosGlobales: {} };
     
-});
+})
 
