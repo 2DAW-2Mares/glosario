@@ -209,3 +209,6 @@
                 });
             }
      })
+
+  	.controller('AppCtrl', function($scope) {
+})

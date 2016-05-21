@@ -5,19 +5,35 @@
 <ion-view id="">
     <ion-content padding="true" class="has-header" has-header="true">
     	<h1 class="text-center" style="color:#000000;" ng-model="nombreTermino">{{nombreTermino}}</h1>
+
 		<ion-list option-buttons="itemButtons" can-swipe="true">
 			<label class="item item-divider">
     			<b>Listado</b>
   			</label>
+
   			<ion-item ng-if="list.length == 0">
 				Press <i class="icon ion-ios7-plus-outline"></i> to add item
 			</ion-item>
-			<!--  -->
+
+			<div class="list card">
+			  <div class="item item-body" ng-repeat="definicion in definiciones">
+			    <p>
+			      {{ definicion.definicion }}
+			    </p>
+			    <p>
+			      <a href="#" class="subdued">1 Like</a>
+			      <a href="#" class="subdued">5 Comments</a>
+			    </p>
+			  </div>
+			</div>
+			
+			<!--
 			<ion-item ng-repeat="definicion in definiciones">		
 
 	  			{{ definicion.definicion }}
 
 			</ion-item>
+			-->
 		</ion-list>
 	</ion-content>
 </ion-view>
