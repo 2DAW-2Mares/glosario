@@ -2,7 +2,15 @@
   This template loads for the 'ListExample' state (app.js)
 -->
 
-<ion-view id="">
+<ion-view id="listadoUltimos">
+
+	<ion-header-bar align-title="center" class="bar-positive">
+      <div class="buttons">
+        <button class="button-clear" style="color:#ffffff;" ng-click="volverConsultar()">
+          <i class="ion-arrow-left-b" style="color:#ffffff;"></i> Volver</button>
+      </div> 
+    </ion-header-bar>
+   
     <ion-content padding="true" class="has-header" has-header="true">
     	<h2 class="text-center" style="color:#000000;">Últimos Términos</h2>
 		<ion-list option-buttons="itemButtons" can-swipe="true">

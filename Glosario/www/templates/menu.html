@@ -1,21 +1,30 @@
-<ion-side-menus enable-menu-with-back-views="true" ng-controller="Menu as vm">
+<ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+          <h1 class="title">Agregar término</h1>
+          <button class="button button-clear button-primary" ng-click="modal.hide()">Cancel</button>
+        </ion-header-bar>
+        <ion-content class="padding">
+          <div class="list">
+            <label class="item item-input">
+              <span class="input-label">Escribe un termino</span>
+              <input ng-model="nuevoTermino.nombre" type="text">
+            </label>
 
-<ion-side-menu-content>
-
-    <ion-nav-bar class="bar-positive">
-        <ion-nav-back-button>
-        </ion-nav-back-button>
-
-        <ion-nav-buttons side="left">
-            <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
-            </button>
-        </ion-nav-buttons>
-
-
-        <ion-nav-buttons side="right">
-            <button menu-toggle="right" class="button button-icon icon ion-ios7-more">
-            </button>
-            <button class="button button-icon icon ion-ios7-reloading" ng-show="loading > 0">
-            </button>
-        </ion-nav-buttons>
-
+            <div class="list">
+        
+		        <div class="item item-divider"> 
+		          Selecciona una materia :
+		        </div>
+		        
+		        <ion-radio ng-repeat="option in materiasElegidas"
+		                   ng-value="option.id"
+		                   ng-model="nuevoTermino.id">
+		          {{ option.ensenanza }}
+		        </ion-radio>
+		        
+		    </div>
+ 
+            <button class="button button-full button-positive" ng-click="crearTermino(nuevoTermino)">AÑADIR</button>
+          </div>
+        </ion-content>
+</ion-modal-view>

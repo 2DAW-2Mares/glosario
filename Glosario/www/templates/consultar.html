@@ -2,13 +2,33 @@
   This template loads for the 'ListExample' state (app.js)
 -->
 <ion-view id="consultar">
-    
-    <ion-nav-bar>
-      <ion-nav-buttons side="left">
-        <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
-      </ion-nav-buttons>
-    </ion-nav-bar>
+    <ion-header-bar align-title="center" class="bar-positive">
+      <div class="buttons">
+        <button class="button button-icon icon ion-android-contact" ng-click="toggleDrawer()"></button>
+      </div>
+      <h1 class="title">GLOSARIO</h1>
+    </ion-header-bar>
+    <!--
+      <div class="buttons">
+        <button class="button-clear" ng-click="myGoBack()">
+          <i class="ion-arrow-left-c"></i> Back</button>
+      </div>
+      --> 
 
+    <drawer side="right">
+      <ion-header-bar align-title="center" class="bar-calm">
+        <h1 class="title">Menu de Usuario</h1>
+        <button class="button button-icon ion-reply" ng-click="toggleDrawer()"></button>
+      
+      </ion-header-bar>
+      <ion-content>
+        <ion-list class="bet-type-list">
+          <ion-item ng-click="modal.show()" style="font-size:1.4em;"><i class="ion-ios-plus"></i>  AGREGAR TERMINO</ion-item>
+        </ion-list>
+      </ion-content>
+    </drawer>
+
+    
     <ion-content padding="true" class="has-header text-center" has-header="true" >
       <h1 id="pagina1-heading1" style="color:#000000;">GLOSARIO</h1>
       <div class="button-bar"></div>
@@ -32,7 +52,7 @@
       <!-- OPCION 2: Por Materias -->
 
       <div ng-show="listadoDeConsulta.url == 'terminosPorMateria'">
-        <button class="button button-positive" modal-select="" ng-model="misMaterias" options="materiasElegidas" modal-title="Seleccione una Materia" option-getter="getMaterias(option)" on-select="miSeleccionMaterias(newValue, oldValue)" ng-change="hola()">
+        <button class="button button-positive" modal-select="" ng-model="misMaterias" options="materiasElegidas" modal-title="Seleccione una Materia" option-getter="getMaterias(option)" on-select="miSeleccionMaterias(newValue, oldValue)" hide-reset="true">
           Selecciona una Materia
           <div class="option">
            {{ option.materia }}
@@ -44,7 +64,7 @@
       </div>
 
       <!-- -->
-
+      
       <a type="button" href="#/{{listadoDeConsulta.url}}" style="font-weight:bold;" class="button button-dark">Consultar</a>
      
     </ion-content>

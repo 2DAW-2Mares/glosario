@@ -1,6 +1,11 @@
 
  angular.module('starter.controllers', [])
-  	.controller('ultimosCtrl', function($scope, $ionicModal, $http, $location, terminoElegido) {
+  	.controller('ultimosCtrl', function($scope, $ionicModal, $http, $location, $ionicHistory, terminoElegido) {
+
+  		/* Botón Volver a consultar*/
+  		$scope.volverConsultar = function() {
+    		$location.path('/consultar');
+  		}
 
 		var config = {
 			headers:  {
@@ -32,17 +37,93 @@
 
 		}
 
-
 	})
 
-  	.controller('consultarCtrl', function ($scope, $http, $ionicModal, $location, listadoDeMaterias) {
+  	.controller('consultarCtrl', function ($scope, $http, $ionicModal, $location, listadoDeMaterias,$ionicPopup) {
 
-  		var config = {
-			headers:  {
-		        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
-		        "Access-Control-Allow-Origin": '*'
+		var config = {
+					headers:  {
+				        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
+				        "Access-Control-Allow-Origin": '*'
+					}
+				}
+
+		  $ionicModal.fromTemplateUrl('templates/menu.html', {
+		    scope: $scope
+		  }).then(function(modal) {
+		    $scope.modal = modal;
+		  });
+
+		  $scope.nuevoTermino=[];
+		  $scope.nuevoTermino.nombre='';
+		  $scope.nuevoTermino.id='';
+
+		  $scope.crearTermino = function(nuevoTermino) {        
+		    console.log(nuevoTermino);
+		  
+
+		    if($scope.nuevoTermino.nombre!='' && $scope.nuevoTermino.id!=''){
+
+		    	$scope.nuevoNombre= nuevoTermino.nombre;
+		    	$scope.nuevoId= nuevoTermino.id;
+
+			    $http.post("http://localhost:1337/termino",{
+					nombre: $scope.nuevoNombre,
+					materia: $scope.nuevoId
+					},config)
+					.success(function(data,status,headers,config){
+					console.log(data);
+				})
+					.error(function(err,status,headers,config){
+					console.log(err);
+				});
+
+				var alertPopupPromise = $ionicPopup.alert({
+					title: '¡Correcto!',
+					template: 'Tu termino se ha creado correctamente',
+					okText: 'Aceptar',
+					okType: 'button-positive'
+				});
+
+			    $scope.modal.hide();
+			    $scope.toggleDrawer();
+			}else{
+				var alertPopupPromise = $ionicPopup.alert({
+					title: 'Alerta',
+					template: 'Es necesario rellenar todos los campos',
+					okText: 'Cerrar',
+					okType: 'button-dark'
+				});
 			}
-		}
+
+		  };
+
+
+  	
+
+  		$scope.agregarTermino = function() {
+	      	var promptPopupPromise = $ionicPopup.prompt({
+		        title: 'Nuevo Término',
+		        template: 'Introduzca un nuevo término',
+		        inputType: 'text',
+		        inputPlaceholder: 'Escribe un término',
+		        cancelText: 'Cancelar',
+		        cancelType: 'button-light',
+		        okText: 'Continuar',
+		        okType: 'button-calm',
+      		});
+
+      		promptPopupPromise.then(function(res) {
+
+      			var nuevoTermino = res;
+
+		        if (nuevoTermino){
+		        	console.log(nuevoTermino);
+		        }
+        
+		    });
+	    }
+		
 
   		/*-- Seleccion de Opciones --*/
 
@@ -91,10 +172,18 @@
 		}
 		
 
+		$scope.busqueda = function(miBusqueda) {
+			console.log(miBusqueda);
+		}
+
      })
 
-  	.controller('terminosPorMateriaCtrl',
-  		function($scope, $ionicModal, $http, $location, listadoDeMaterias, terminoElegido) {
+  	.controller('terminosPorMateriaCtrl', function($scope, $ionicModal, $http, $location, listadoDeMaterias, terminoElegido) {
+
+  		/* Botón Volver a consultar*/
+  		$scope.volverConsultar = function() {
+    		$location.path('/consultar');
+  		}
 
   		var config = {
 			headers:  {
@@ -133,7 +222,12 @@
 
   	})
 
-  	.controller('busquedaDirectaCtrl', function($scope, $ionicModal, $http, $location, terminoElegido) {
+  	.controller('busquedaDirectaCtrl', function($scope, $ionicModal, $http, $location, $ionicPopup,terminoElegido) {
+
+  		/* Botón Volver a consultar*/
+  		$scope.volverConsultar = function() {
+    		$location.path('/consultar');
+  		}
 
 		var config = {
 			headers:  {
@@ -142,16 +236,42 @@
 			}
 		}
 
-	    $scope.listado =[];
+		
+		$scope.busqueda = function(miBusqueda) {
+			console.log(miBusqueda);
+			if(miBusqueda){
+				$scope.valorIntroducido = miBusqueda;
+				$scope.listado = null;
 
-		$http.get("http://localhost:1337/termino", config)
-		.success(function(data){
-			$scope.listado = data;
-			console.log(data);
-		})
-		.error(function(err){
-			console.log(err);
-		});
+				$http.get("http://localhost:1337/search/"+$scope.valorIntroducido, config)
+				.success(function(data){
+					
+					if(data != ''){
+						$scope.listado = data;
+						
+					}else{
+						var alertPopupPromise = $ionicPopup.alert({
+							title: 'Alerta',
+							template: 'No se encontraron coincidencias',
+							okText: 'Cerrar',
+							okType: 'button-dark'
+						});
+					}	
+				})
+				.error(function(err){
+					console.log(err);
+				});
+			}else{
+
+				var alertPopupPromise = $ionicPopup.alert({
+					title: 'Alerta',
+					template: 'Debes escribir algo',
+					okText: 'Cerrar',
+					okType: 'button-assertive'
+				});
+			}
+
+		}
 
 		$scope.select_item = function(termino){
 
@@ -170,7 +290,12 @@
 
 
   	.controller('definicionesCtrl',
-  		function($scope, $ionicModal, $http, terminoElegido) {
+  		function($scope, $ionicModal, $http,$ionicHistory, terminoElegido) {
+
+  		/* Botón Volver */
+  		$scope.volver = function() {
+    		$ionicHistory.goBack();
+  		}
 
 
   		$scope.idTermino = terminoElegido.datosGlobales.idTermino;
