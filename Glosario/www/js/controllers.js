@@ -1,71 +1,36 @@
-
- angular.module('starter.controllers', [])
-  	.controller('ultimosCtrl', function($scope, $ionicModal, $http, $location, $ionicHistory, terminoElegido) {
-
-  		/* Botón Volver a consultar*/
-  		$scope.volverConsultar = function() {
-    		$location.path('/consultar');
-  		}
+angular.module('starter.controllers', [])
+  	.controller('consultarCtrl', function ($scope, $http, $ionicModal, $location, listadoDeMaterias,$ionicPopup) {
 
 		var config = {
-			headers:  {
+			headers:
+			{
 		        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
 		        "Access-Control-Allow-Origin": '*'
 			}
 		}
 
-	    $scope.listado =[];
+		/*-- Código Menú lateral ($ionicModal) --*/
 
-		$http.get("http://localhost:1337/ultimos", config)
-		.success(function(data){
-			$scope.listado = data;
-			console.log(data);
-		})
-		.error(function(err){
-			console.log(err);
+		$ionicModal.fromTemplateUrl('templates/menu.html', {
+			scope: $scope
+		}).then(function(modal) {
+			$scope.modal = modal;
 		});
 
-		$scope.select_item = function(termino){
+		/*-- Código para crear término nuevo --*/
 
-			terminoElegido.datosGlobales.idTermino = termino.id;
-			terminoElegido.datosGlobales.nombreTermino = termino.nombre;
+		$scope.nuevoTermino=[];
+		$scope.nuevoTermino.nombre='';
+		$scope.nuevoTermino.id='';
 
-			if (terminoElegido.datosGlobales.idTermino!= null && terminoElegido.datosGlobales.nombreTermino != null) {
-		      	
-				$location.path('/definiciones');
-		    }
+		$scope.crearTermino = function(nuevoTermino) {        
+		
+			console.log(nuevoTermino);
 
-		}
+			if($scope.nuevoTermino.nombre!='' && $scope.nuevoTermino.id!=''){
 
-	})
-
-  	.controller('consultarCtrl', function ($scope, $http, $ionicModal, $location, listadoDeMaterias,$ionicPopup) {
-
-		var config = {
-					headers:  {
-				        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
-				        "Access-Control-Allow-Origin": '*'
-					}
-				}
-
-		  $ionicModal.fromTemplateUrl('templates/menu.html', {
-		    scope: $scope
-		  }).then(function(modal) {
-		    $scope.modal = modal;
-		  });
-
-		  $scope.nuevoTermino=[];
-		  $scope.nuevoTermino.nombre='';
-		  $scope.nuevoTermino.id='';
-
-		  $scope.crearTermino = function(nuevoTermino) {        
-		    console.log(nuevoTermino);
-		  
-
-		    if($scope.nuevoTermino.nombre!='' && $scope.nuevoTermino.id!=''){
-
-		    	$scope.nuevoNombre= nuevoTermino.nombre;
-		    	$scope.nuevoId= nuevoTermino.id;
+				$scope.nuevoNombre= nuevoTermino.nombre;
+				$scope.nuevoId= nuevoTermino.id;
 
 			    $http.post("http://localhost:1337/termino",{
 					nombre: $scope.nuevoNombre,
@@ -87,6 +52,7 @@
 
 			    $scope.modal.hide();
 			    $scope.toggleDrawer();
+
 			}else{
 				var alertPopupPromise = $ionicPopup.alert({
 					title: 'Alerta',
@@ -96,34 +62,7 @@
 				});
 			}
 
-		  };
-
-
-  	
-
-  		$scope.agregarTermino = function() {
-	      	var promptPopupPromise = $ionicPopup.prompt({
-		        title: 'Nuevo Término',
-		        template: 'Introduzca un nuevo término',
-		        inputType: 'text',
-		        inputPlaceholder: 'Escribe un término',
-		        cancelText: 'Cancelar',
-		        cancelType: 'button-light',
-		        okText: 'Continuar',
-		        okType: 'button-calm',
-      		});
-
-      		promptPopupPromise.then(function(res) {
-
-      			var nuevoTermino = res;
-
-		        if (nuevoTermino){
-		        	console.log(nuevoTermino);
-		        }
-        
-		    });
-	    }
-		
+		};
 
   		/*-- Seleccion de Opciones --*/
 
@@ -138,12 +77,10 @@
     		return option;
 		};
 
-
 		$scope.miSeleccionOpciones = function(newValue, oldValue){
 			$scope.idOpcion = newValue.id;
 			$scope.nombreOpcion = newValue.enunciado;
 		};
-
 
 		/*-- OPCION 2: Por Materias --*/
 
@@ -178,6 +115,46 @@
 
      })
 
+  	.controller('ultimosCtrl', function($scope, $ionicModal, $http, $location, $ionicHistory, terminoElegido) {
+
+  		/* Botón Volver a consultar*/
+  		$scope.volverConsultar = function() {
+    		$location.path('/consultar');
+  		}
+
+		var config = {
+			headers:
+			{
+		        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
+		        "Access-Control-Allow-Origin": '*'
+			}
+		}
+
+	    $scope.listado =[];
+
+		$http.get("http://localhost:1337/ultimos", config)
+		.success(function(data){
+			$scope.listado = data;
+			console.log(data);
+		})
+		.error(function(err){
+			console.log(err);
+		});
+
+		$scope.select_item = function(termino){
+
+			terminoElegido.datosGlobales.idTermino = termino.id;
+			terminoElegido.datosGlobales.nombreTermino = termino.nombre;
+
+			if (terminoElegido.datosGlobales.idTermino!= null && terminoElegido.datosGlobales.nombreTermino != null) {
+		      	
+				$location.path('/definiciones');
+		    }
+
+		}
+
+	})
+
   	.controller('terminosPorMateriaCtrl', function($scope, $ionicModal, $http, $location, listadoDeMaterias, terminoElegido) {
 
   		/* Botón Volver a consultar*/
@@ -186,7 +163,9 @@
   		}
 
   		var config = {
-			headers:  {
+			headers:
+
+			{
 		        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
 		        "Access-Control-Allow-Origin": '*'
 			}
@@ -195,8 +174,7 @@
   		$scope.idMateria = listadoDeMaterias.datosGlobales.idMateria;
   		$scope.nombreMateria = listadoDeMaterias.datosGlobales.nombreMateria;
 
-  		
-  		// Obtener terminos por Materia
+  		/* Obtener terminos por Materia */
   		
 	    $scope.terminosPorMateria =[];
 
