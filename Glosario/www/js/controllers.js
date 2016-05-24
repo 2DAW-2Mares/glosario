@@ -1,5 +1,22 @@
 angular.module('starter.controllers', [])
-  	.controller('consultarCtrl', function ($scope, $http, $ionicModal, $location, listadoDeMaterias,$ionicPopup) {
+  	.controller('consultarCtrl', function ($scope, $http, $ionicModal, $location, $ionicPopup, googleLogin, listadoDeMaterias) {
+
+
+  		$scope.google_data = {};
+        
+        $scope.login = function () {
+            var promise = googleLogin.startLogin();
+            promise.then(function (data) {
+                $scope.google_data = data;
+
+                console.log("correo: "+$scope.google_data.email);
+                
+
+            }, function (data) {
+                $scope.google_data = data;
+                
+            });
+        }  
 
 		var config = {
 			headers:
@@ -9,7 +26,7 @@ angular.module('starter.controllers', [])
 			}
 		}
 
-		/*-- Código Menú lateral ($ionicModal) --*/
+		/*-- Código para agregar término ($ionicModal) --*/
 
 		$ionicModal.fromTemplateUrl('templates/menu.html', {
 			scope: $scope
@@ -266,15 +283,21 @@ angular.module('starter.controllers', [])
 
 	})
 
-
   	.controller('definicionesCtrl',
-  		function($scope, $ionicModal, $http,$ionicHistory, terminoElegido) {
+  		function($scope, $ionicModal, $http,$ionicHistory, $ionicPopup, terminoElegido) {
 
   		/* Botón Volver */
   		$scope.volver = function() {
     		$ionicHistory.goBack();
   		}
 
+  		/*-- Código para agregar definición ($ionicModal) --*/
+
+  		$ionicModal.fromTemplateUrl('templates/agregarDefinicion.html', {
+			scope: $scope
+		}).then(function(modal) {
+			$scope.modal = modal;
+		});
 
   		$scope.idTermino = terminoElegido.datosGlobales.idTermino;
   		$scope.nombreTermino = terminoElegido.datosGlobales.nombreTermino;
@@ -289,14 +312,67 @@ angular.module('starter.controllers', [])
   		
 	    $scope.definiciones =[];
 
-		$http.get("http://localhost:1337/termino/"+$scope.idTermino+"/definiciones", config)
-		.success(function(data){
-			$scope.definiciones = data;
-			console.log(data);
-		})
-		.error(function(err){
-			console.log(err);
-		});
+	    $scope.getDefiniciones = function() {
+
+			$http.get("http://localhost:1337/termino/"+$scope.idTermino+"/definiciones", config)
+			.success(function(data){
+				$scope.definiciones = data;
+				console.log(data);
+			})
+			.error(function(err){
+				console.log(err);
+			});
+		}
+
+		$scope.getDefiniciones();		
+
+		/*-- Código para crear término nuevo --*/
+
+		$scope.nuevaDefinicion=[];
+		$scope.nuevaDefinicion.definicion='';
+
+		$scope.crearDefinicion = function(nuevaDefinicion) {        
+		
+			console.log(nuevaDefinicion);
+
+
+			if($scope.nuevaDefinicion.definicion!=''){
+
+				$scope.nuevaDef= nuevaDefinicion.definicion;
+
+				console.log($scope.nuevaDef);
+
+
+			    $http.post("http://localhost:1337/termino/"+$scope.idTermino+"/agregar",{
+					definicion: $scope.nuevaDef
+					},config)
+					.success(function(data,status,headers,config){
+					console.log(data);
+					$scope.getDefiniciones();
+				})
+					.error(function(err,status,headers,config){
+					console.log(err);
+				});
+
+				var alertPopupPromise = $ionicPopup.alert({
+					title: '¡Correcto!',
+					template: 'Tu definicion se ha creado correctamente',
+					okText: 'Aceptar',
+					okType: 'button-positive'
+				});
+
+			    $scope.modal.hide();
+
+			}else{
+				var alertPopupPromise = $ionicPopup.alert({
+					title: 'Alerta',
+					template: 'Es necesario escribir una definición',
+					okText: 'Cerrar',
+					okType: 'button-dark'
+				});
+			}
+
+		};
 
   	})
 

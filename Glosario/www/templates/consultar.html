@@ -64,8 +64,21 @@
       </div>
 
       <!-- -->
+      <div>
+        <a type="button" href="#/{{listadoDeConsulta.url}}" style="font-weight:bold;" class="button button-dark">Consultar</a>
+      </div>
       
-      <a type="button" href="#/{{listadoDeConsulta.url}}" style="font-weight:bold;" class="button button-dark">Consultar</a>
+      <div>
+        <br/>
+        <br/>
+        <button ng-click="login()" class="button button-positive">
+            Login Via Google
+        </button>                        
+        <br/>
+        <pre>
+        {{google_data|json}}
+        </pre>
+      </div>
      
     </ion-content>
 </ion-view>

@@ -57,14 +57,14 @@ angular.module('starter', ['ionic','ionic-modal-select','starter.controllers','s
       controller: 'definicionesCtrl'
   })
 
-//$urlRouterProvider.otherwise('/login')
+$urlRouterProvider.otherwise('/consultar')
 /*
 $httpProvider.interceptors.push(['$q', '$location', '$localStorage', function($q, $location, $localStorage) {
         return {
                 'request': function (config) {
                     config.headers = config.headers || {};
                     var mami = $localStorage.timeStorage;
-                    console.log('Hola: '+ mami);
+                    console.log('Hola: '+ algo);
                     
                     if ($localStorage.token) {
                         config.headers.Authorization = 'Bearer ' + $localStorage.token;

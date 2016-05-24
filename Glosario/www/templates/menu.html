@@ -6,21 +6,21 @@
         <ion-content class="padding">
           <div class="list">
             <label class="item item-input">
-              <span class="input-label">Escribe un termino</span>
+              <span class="input-label">Escribe un término: </span>
               <input ng-model="nuevoTermino.nombre" type="text">
             </label>
 
             <div class="list">
-        
-		        <div class="item item-divider"> 
-		          Selecciona una materia :
-		        </div>
-		        
-		        <ion-radio ng-repeat="option in materiasElegidas"
-		                   ng-value="option.id"
-		                   ng-model="nuevoTermino.id">
-		          {{ option.ensenanza }}
-		        </ion-radio>
+  		        <div class="item item-divider"> 
+  		          Selecciona una materia :
+  		        </div>
+  		        
+  		        <ion-radio ng-repeat="option in materiasElegidas"
+  		                   ng-value="option.id"
+  		                   ng-model="nuevoTermino.id">
+  		          {{ option.ensenanza }}
+  		        </ion-radio>
+            </div>
 		        
 		    </div>
  

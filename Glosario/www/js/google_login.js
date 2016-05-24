@@ -168,7 +168,7 @@ googleLoginService.factory('googleLogin', [
                     scope: ''
                 }
             });
-            var miToken = 'cabron';
+
             var context = this;
             http.then(function (data) {
                 $log.debug(data);
