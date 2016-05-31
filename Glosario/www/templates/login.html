@@ -5,22 +5,30 @@
         <ion-header-bar class="bar-stable">
             <h1 class="title">Ionic Google Login Demo</h1>
         </ion-header-bar>
-        <ion-content ng-controller="google">
+        <ion-content>
             <br/><br/><br/><br/>
             <div style="width: 100%;text-align: center">
-                <button ng-click="login();" class="button">
-                    Login Via Google
-                </button>                        
-                <br/>
+                <div ng-if="!isAuthenticated()">
+                    <button ng-click="authenticate('google')" class="button button-block icon-left ion-social-googleplus">
+                      Sign in with Google
+                    </button>
+                </div>
+
+                <div ng-if="isAuthenticated()">
+                  <div class="card">
+                    <div class="item item-text-wrap">
+                      You are currently logged in.
+                    </div>
+                  </div>
+                  <button ng-click="logout()" class="button button-block">
+                    Log Out
+                  </button>
+                </div>
+
                 <pre>
                 {{google_data|json}}
                 </pre>
+                
             </div>
         </ion-content>
     </ion-pane>
-
-    <ion-list>
-		  <ion-item href="#/list">
-		    Enlace login
-		  </ion-item>
-	</ion-list>

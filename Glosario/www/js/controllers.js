@@ -1,23 +1,6 @@
 angular.module('starter.controllers', [])
-  	.controller('consultarCtrl', function ($scope, $http, $ionicModal, $location, $ionicPopup, googleLogin, listadoDeMaterias) {
-
-
-  		$scope.google_data = {};
-        
-        $scope.login = function () {
-            var promise = googleLogin.startLogin();
-            promise.then(function (data) {
-                $scope.google_data = data;
-
-                console.log("correo: "+$scope.google_data.email);
-                
-
-            }, function (data) {
-                $scope.google_data = data;
-                
-            });
-        }  
-
+  	.controller('consultarCtrl', function ($scope, $http, $ionicModal, $location, $ionicPopup, listadoDeMaterias) {
+  	
 		var config = {
 			headers:
 			{
@@ -35,6 +18,17 @@ angular.module('starter.controllers', [])
 		});
 
 		/*-- Código para crear término nuevo --*/
+
+		$scope.materiasDisponibles = [];
+
+		$http.get("http://localhost:1337/materia", config)
+		.success(function(data){
+			$scope.materiasDisponibles = data;
+			console.log(data);
+		})
+		.error(function(err){
+			console.log(err);
+		});
 
 		$scope.nuevoTermino=[];
 		$scope.nuevoTermino.nombre='';
@@ -85,9 +79,8 @@ angular.module('starter.controllers', [])
 
         $scope.selectables = [
 		    { enunciado: "Ultimos terminos", url : "ultimos"},
-		    { enunciado: "Por materia", url : "terminosPorMateria"},
-		    { enunciado: "Busqueda directa", url : "busquedaDirecta"},
-		    { enunciado: "Por alumno", url : "4"}
+		    { enunciado: "Por materia", url : "materia"},
+		    { enunciado: "Busqueda directa", url : "busquedaDirecta"}
 		];
 
 		$scope.getOpciones = function(option){
@@ -97,38 +90,10 @@ angular.module('starter.controllers', [])
 		$scope.miSeleccionOpciones = function(newValue, oldValue){
 			$scope.idOpcion = newValue.id;
 			$scope.nombreOpcion = newValue.enunciado;
+			$scope.urlOpcion = newValue.url;
+
+			$location.path('/'+$scope.urlOpcion);
 		};
-
-		/*-- OPCION 2: Por Materias --*/
-
-		$scope.materiasElegidas = [];
-
-		$http.get("http://localhost:1337/materia", config)
-		.success(function(data){
-			$scope.materiasElegidas = data;
-			console.log(data);
-		})
-		.error(function(err){
-			console.log(err);
-		});
-		
-		$scope.getMaterias = function(option){
-    		return option;
-		};
-
-		$scope.miSeleccionMaterias = function(newValue, oldValue){
-
-			$scope.idMateria = newValue.id;
-			$scope.nombreMateria = newValue.materia;
-
-			listadoDeMaterias.datosGlobales.idMateria = $scope.idMateria;
-			listadoDeMaterias.datosGlobales.nombreMateria = $scope.nombreMateria;	
-		}
-		
-
-		$scope.busqueda = function(miBusqueda) {
-			console.log(miBusqueda);
-		}
 
      })
 
@@ -172,11 +137,53 @@ angular.module('starter.controllers', [])
 
 	})
 
-  	.controller('terminosPorMateriaCtrl', function($scope, $ionicModal, $http, $location, listadoDeMaterias, terminoElegido) {
+	.controller('materiaCtrl', function($scope, $ionicModal, $http, $location, $ionicHistory, listadoDeMaterias) {
 
   		/* Botón Volver a consultar*/
   		$scope.volverConsultar = function() {
     		$location.path('/consultar');
+  		}
+
+		var config = {
+			headers:
+			{
+		        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
+		        "Access-Control-Allow-Origin": '*'
+			}
+		}
+
+		$scope.materiasDisponibles = [];
+
+		$http.get("http://localhost:1337/materia", config)
+		.success(function(data){
+			$scope.materiasDisponibles = data;
+			console.log(data);
+		})
+		.error(function(err){
+			console.log(err);
+		});
+		
+		$scope.miSeleccionMaterias = function(materia){
+
+			$scope.idMateria = materia.id;
+			$scope.nombreMateria = materia.materia;
+
+			listadoDeMaterias.datosGlobales.idMateria = $scope.idMateria;
+			listadoDeMaterias.datosGlobales.nombreMateria = $scope.nombreMateria;
+
+			if (listadoDeMaterias.datosGlobales.idMateria!= null && listadoDeMaterias.datosGlobales.nombreMateria != null) {
+		      	
+				$location.path('/terminosPorMateria');
+		    }
+		}
+
+	})
+
+  	.controller('terminosPorMateriaCtrl', function($scope, $ionicModal, $http, $location, listadoDeMaterias, terminoElegido) {
+
+  		/* Botón Volver a consultar*/
+  		$scope.volverConsultar = function() {
+    		$location.path('/materia');
   		}
 
   		var config = {
@@ -376,18 +383,33 @@ angular.module('starter.controllers', [])
 
   	})
 
+  	.controller('loginCtrl', function($scope, $ionicPopup, $auth, $location) {
 
-  	.controller('google', function ($scope, googleLogin) {
-            $scope.google_data = {};
-            $scope.login = function () {
-                var promise = googleLogin.startLogin();
-                promise.then(function (data) {
-                    $scope.google_data = data;
-                }, function (data) {
-                    $scope.google_data = data;
-                });
-            }
-     })
+    $scope.authenticate = function(provider) {
+      $auth.authenticate(provider)
+        .then(function() {
+          $ionicPopup.alert({
+            title: 'Success',
+            content: 'You have successfully logged in!'
+          })
 
-  	.controller('AppCtrl', function($scope) {
-})
+          $location.path('/consultar');
+        })
+        .catch(function(response) {
+          $ionicPopup.alert({
+            title: 'Error',
+            content: response.data ? response.data || response.data.message : response
+          })
+
+        });
+    };
+
+
+    $scope.logout = function() {
+      $auth.logout();
+    };
+
+    $scope.isAuthenticated = function() {
+      return $auth.isAuthenticated();
+    };
+  });

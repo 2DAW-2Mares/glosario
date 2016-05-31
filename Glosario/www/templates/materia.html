@@ -1,32 +1,28 @@
-<!--
-  This template loads for the 'ListExample' state (app.js)
--->
 
-<ion-view id="">
+<ion-view id="materia">
+    <ion-header-bar align-title="center" class="bar-positive">
+      <div class="buttons">
+        <button class="button-clear" style="color:#ffffff;" ng-click="volverConsultar()">
+          <i class="ion-arrow-left-b" style="color:#ffffff;"></i> Volver</button>
+      </div> 
+    </ion-header-bar>
+   
     <ion-content padding="true" class="has-header" has-header="true">
-    	<h2 class="text-center" style="color:#000000;"ng-model="nombreTermino">{{nombreTermino}}</h2>
+    	<h2 class="text-center" style="color:#000000;">Materias</h2>
 		<ion-list option-buttons="itemButtons" can-swipe="true">
 			<label class="item item-divider">
-    			<b>Listado</b>
+    			<div id="markdown1" style="color:#000000;">
+		          <p>Selecciona una materia:</p>
+		      	</div>
   			</label>
-  			<ion-item ng-if="list.length == 0">
-				Press <i class="icon ion-ios7-plus-outline"></i> to add item
-			</ion-item>
-			<!--  -->
-			<ion-item ui-sref="terminosPorMateria" ng-repeat="materia in materias" ng-model="miMateriaSeleccionada">
 
-	    			{{ materia.ensenanza }}
-	
-			</ion-item>
+			<ion-item ng-repeat="materia in materiasDisponibles" ng-model="materiaElegida">		
 
+				<div ng-click="miSeleccionMaterias(materia)">
+	  			 {{ materia.materia }}
+	  			</div>
+
+			</ion-item>
 		</ion-list>
-
-		<select ng-model="miMateriaSeleccionada" ng-options="materia as materia.ensenanza for materia in materias track by materia.id">
-        	<option value="">--Elige opcion--</option>
-     	</select>
-
-     	<br>
-      	El nombre de la provincia seleccionada es:{{miMateriaSeleccionada.id}}
-		
 	</ion-content>
 </ion-view>

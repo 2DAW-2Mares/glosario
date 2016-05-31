@@ -28,7 +28,6 @@
       </ion-content>
     </drawer>
 
-    
     <ion-content padding="true" class="has-header text-center" has-header="true" >
       <h1 id="pagina1-heading1" style="color:#000000;">GLOSARIO</h1>
       <div class="button-bar"></div>
@@ -45,29 +44,15 @@
             </div>
         </button>
 
-        <h4 class="text-center" style="color:#000000;">{{listadoDeConsulta.enunciado}}</h4>
-
       </div>
 
-      <!-- OPCION 2: Por Materias -->
-
-      <div ng-show="listadoDeConsulta.url == 'terminosPorMateria'">
-        <button class="button button-positive" modal-select="" ng-model="misMaterias" options="materiasElegidas" modal-title="Seleccione una Materia" option-getter="getMaterias(option)" on-select="miSeleccionMaterias(newValue, oldValue)" hide-reset="true">
-          Selecciona una Materia
-          <div class="option">
-           {{ option.materia }}
-          </div>
+      <div class="padding">
+        {{accessToken}}
+        <button class="button button-block button-stable">
+            Do Something
         </button>
-
-        <h4 class="text-center" style="color:#000000;">{{misMaterias.materia}}</h4>
-
       </div>
 
-      <!-- -->
-      <div>
-        <a type="button" href="#/{{listadoDeConsulta.url}}" style="font-weight:bold;" class="button button-dark">Consultar</a>
-      </div>
-      
       <div>
         <br/>
         <br/>
@@ -79,6 +64,6 @@
         {{google_data|json}}
         </pre>
       </div>
-     
+      
     </ion-content>
 </ion-view>

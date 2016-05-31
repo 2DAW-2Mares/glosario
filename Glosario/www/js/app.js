@@ -5,82 +5,114 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','ionic-modal-select','starter.controllers','starter.services','GoogleLoginService','ionic.contrib.drawer'])
-
-  .run(function($ionicPlatform) {
-    $ionicPlatform.ready(function() {
-      if(window.StatusBar) {
-        StatusBar.styleDefault();
-      }
-    });
-  })
-
+angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.controllers','starter.services','ionic.contrib.drawer'])
 
   .config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
   $stateProvider
+    .state('login', {
+      url: '/login',
+      templateUrl: 'templates/login.html',
+      controller: 'loginCtrl'
+    })
 
- 
-  .state('login', {
-    url: '/login',
-    templateUrl: 'templates/login.html',
-    controller: 'google'
+    .state('consultar', {
+        url: '/consultar',
+        templateUrl: 'templates/consultar.html',
+        controller: 'consultarCtrl'
+    })
+
+    .state('listadoUltimos', {
+        url: '/ultimos',
+        templateUrl: 'templates/ultimos.html',
+        controller: 'ultimosCtrl'
+    })
+
+    .state('materia', {
+        url: '/materia',
+        templateUrl: 'templates/materia.html',
+        controller: 'materiaCtrl'
+    })
+
+    .state('busquedaDirecta', {
+        url: '/busquedaDirecta',
+        templateUrl: 'templates/busquedaDirecta.html',
+        controller: 'busquedaDirectaCtrl'
+    })
+
+    .state('terminosPorMateria', {
+        url: '/terminosPorMateria',
+        templateUrl: 'templates/terminosPorMateria.html',
+        controller: 'terminosPorMateriaCtrl'
+    })
+
+    .state('definiciones', {
+        url: '/definiciones',
+        templateUrl: 'templates/definiciones.html',
+        controller: 'definicionesCtrl'
+    })
+
+  $urlRouterProvider.otherwise('/login');
+
   })
 
-  .state('consultar', {
-      url: '/consultar',
-      templateUrl: 'templates/consultar.html',
-      controller: 'consultarCtrl'
-  })
+  .config(function($authProvider) {
 
-  .state('listadoUltimos', {
-      url: '/ultimos',
-      templateUrl: 'templates/ultimos.html',
-      controller: 'ultimosCtrl'
-  })
+    /*
+    var commonConfig = {
+      popupOptions: {
+        location: 'no',
+        toolbar: 'yes',
+        width: window.screen.width,
+        height: window.screen.height
+      }
+    };
 
-  .state('busquedaDirecta', {
-      url: '/busquedaDirecta',
-      templateUrl: 'templates/busquedaDirecta.html',
-      controller: 'busquedaDirectaCtrl'
-  })
+    if (ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
+      commonConfig.redirectUri = 'http://localhost:8100';
+    }
+    
+    $authProvider.google(angular.extend({}, commonConfig, {
+      clientId: '310617402015-hp121f8gb6vvkfvc31ttesr481b2c0kc.apps.googleusercontent.com',
+      url: 'http://localhost:8100',
+    }));
+    */
 
-  .state('terminosPorMateria', {
-      url: '/terminosPorMateria',
-      templateUrl: 'templates/terminosPorMateria.html',
-      controller: 'terminosPorMateriaCtrl'
-  })
+    $authProvider.tokenName = 'tokens';
+    $authProvider.authHeader = 'Authorization';
+    $authProvider.authToken = 'Bearer';
+    $authProvider.loginUrl = "http://localhost:8100/#/login";
 
-  .state('definiciones', {
-      url: '/definiciones',
-      templateUrl: 'templates/definiciones.html',
-      controller: 'definicionesCtrl'
-  })
+    $authProvider.oauth2({
+      name: 'google',
+      url: 'http://localhost:1337',
+      clientId: '310617402015-km1v4tpfanohdohd9a75cfb236757pac.apps.googleusercontent.com',
+      redirectUri: 'http://localhost:8100',
+      authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
+      scope: ['profile', 'email'],
+      scopePrefix: 'openid',
+      scopeDelimiter: ' ',
+      requiredUrlParams: ['scope'],
+      optionalUrlParams: ['display'],
+      display: 'popup',
+      type: '2.0',
+      popupOptions: { width: window.screen.width, height: window.screen.height },
+      storageType: 'localStorage',
+    });
+  
 
-$urlRouterProvider.otherwise('/consultar')
-/*
-$httpProvider.interceptors.push(['$q', '$location', '$localStorage', function($q, $location, $localStorage) {
-        return {
-                'request': function (config) {
-                    config.headers = config.headers || {};
-                    var mami = $localStorage.timeStorage;
-                    console.log('Hola: '+ algo);
-                    
-                    if ($localStorage.token) {
-                        config.headers.Authorization = 'Bearer ' + $localStorage.token;
-                    }
-                    return config;
-                },
-                'responseError': function(response) {
-                    if(response.status === 401 || response.status === 403) {
-                        $location.path('/login');
-                    }
-                    return $q.reject(response);
-                }
-            };
-        }]);
-*/
   })
+  .run(function ($ionicPlatform) {
+    $ionicPlatform.ready(function () {
+      if (window.cordova && window.cordova.plugins.Keyboard) {
+        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      }
+      if (window.StatusBar) {
+        StatusBar.styleDefault();
+      }
+    });
+  });
+
 
   
 
