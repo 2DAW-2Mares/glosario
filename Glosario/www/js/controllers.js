@@ -1,4 +1,35 @@
 angular.module('starter.controllers', [])
+
+	.controller('loginCtrl', function($scope, $ionicPopup, $auth, $location) {
+
+	    $scope.authenticate = function(provider) {
+	      $auth.authenticate(provider)
+	        .then(function() {
+	          $ionicPopup.alert({
+	            title: 'Success',
+	            content: 'You have successfully logged in!'
+	          })
+
+	          $location.path('/consultar');
+	        })
+	        .catch(function(response) {
+	          $ionicPopup.alert({
+	            title: 'Error',
+	            content: response.data ? response.data || response.data.message : response
+	          })
+
+	        });
+	    };
+
+	    $scope.logout = function() {
+	      $auth.logout();
+	    };
+
+	    $scope.isAuthenticated = function() {
+	      return $auth.isAuthenticated();
+	    };
+  	})
+
   	.controller('consultarCtrl', function ($scope, $http, $ionicModal, $location, $ionicPopup, listadoDeMaterias) {
   	
 		var config = {
@@ -9,9 +40,43 @@ angular.module('starter.controllers', [])
 			}
 		}
 
-		/*-- Código para agregar término ($ionicModal) --*/
+  		/*-- Seleccion de Opciones --*/
 
-		$ionicModal.fromTemplateUrl('templates/menu.html', {
+        $scope.selectables = [
+		    { enunciado: "Ultimos terminos", url : "ultimos"},
+		    { enunciado: "Por materia", url : "materia"},
+		    { enunciado: "Busqueda directa", url : "busquedaDirecta"}
+		];
+
+		$scope.getOpciones = function(option){
+    		return option;
+		};
+
+		$scope.miSeleccionOpciones = function(newValue, oldValue){
+			$scope.idOpcion = newValue.id;
+			$scope.nombreOpcion = newValue.enunciado;
+			$scope.urlOpcion = newValue.url;
+
+			$location.path('/tab/'+$scope.urlOpcion);
+		};
+
+     })
+
+  	
+
+  	.controller('usuarioCtrl', function ($scope, $http, $ionicModal, $location, $ionicPopup, listadoDeMaterias) {
+
+  		var config = {
+			headers:
+			{
+		        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
+		        "Access-Control-Allow-Origin": '*'
+			}
+		}
+
+  		/*-- Código para agregar término ($ionicModal) --*/
+
+		$ionicModal.fromTemplateUrl('templates/agregarTermino.html', {
 			scope: $scope
 		}).then(function(modal) {
 			$scope.modal = modal;
@@ -21,6 +86,7 @@ angular.module('starter.controllers', [])
 
 		$scope.materiasDisponibles = [];
 
+		/*-- Es necesario cargar la lista de materias para asignar una al nuevo término --*/
 		$http.get("http://localhost:1337/materia", config)
 		.success(function(data){
 			$scope.materiasDisponibles = data;
@@ -62,7 +128,6 @@ angular.module('starter.controllers', [])
 				});
 
 			    $scope.modal.hide();
-			    $scope.toggleDrawer();
 
 			}else{
 				var alertPopupPromise = $ionicPopup.alert({
@@ -75,27 +140,7 @@ angular.module('starter.controllers', [])
 
 		};
 
-  		/*-- Seleccion de Opciones --*/
-
-        $scope.selectables = [
-		    { enunciado: "Ultimos terminos", url : "ultimos"},
-		    { enunciado: "Por materia", url : "materia"},
-		    { enunciado: "Busqueda directa", url : "busquedaDirecta"}
-		];
-
-		$scope.getOpciones = function(option){
-    		return option;
-		};
-
-		$scope.miSeleccionOpciones = function(newValue, oldValue){
-			$scope.idOpcion = newValue.id;
-			$scope.nombreOpcion = newValue.enunciado;
-			$scope.urlOpcion = newValue.url;
-
-			$location.path('/'+$scope.urlOpcion);
-		};
-
-     })
+  	})
 
   	.controller('ultimosCtrl', function($scope, $ionicModal, $http, $location, $ionicHistory, terminoElegido) {
 
@@ -130,7 +175,7 @@ angular.module('starter.controllers', [])
 
 			if (terminoElegido.datosGlobales.idTermino!= null && terminoElegido.datosGlobales.nombreTermino != null) {
 		      	
-				$location.path('/definiciones');
+				$location.path('/tab/definiciones');
 		    }
 
 		}
@@ -173,7 +218,7 @@ angular.module('starter.controllers', [])
 
 			if (listadoDeMaterias.datosGlobales.idMateria!= null && listadoDeMaterias.datosGlobales.nombreMateria != null) {
 		      	
-				$location.path('/terminosPorMateria');
+				$location.path('/tab/terminosPorMateria');
 		    }
 		}
 
@@ -218,7 +263,7 @@ angular.module('starter.controllers', [])
 
 			if (terminoElegido.datosGlobales.idTermino!= null && terminoElegido.datosGlobales.nombreTermino != null) {
 		      	
-				$location.path('/definiciones');
+				$location.path('/tab/definiciones');
 		    }
 		}
 
@@ -282,7 +327,7 @@ angular.module('starter.controllers', [])
 
 			if (terminoElegido.datosGlobales.idTermino!= null && terminoElegido.datosGlobales.nombreTermino != null) {
 		      	
-				$location.path('/definiciones');
+				$location.path('/tab/definiciones');
 		    }
 
 		}
@@ -333,7 +378,7 @@ angular.module('starter.controllers', [])
 
 		$scope.getDefiniciones();		
 
-		/*-- Código para crear término nuevo --*/
+		/*-- Código para crear una nueva definición --*/
 
 		$scope.nuevaDefinicion=[];
 		$scope.nuevaDefinicion.definicion='';
@@ -383,33 +428,4 @@ angular.module('starter.controllers', [])
 
   	})
 
-  	.controller('loginCtrl', function($scope, $ionicPopup, $auth, $location) {
-
-    $scope.authenticate = function(provider) {
-      $auth.authenticate(provider)
-        .then(function() {
-          $ionicPopup.alert({
-            title: 'Success',
-            content: 'You have successfully logged in!'
-          })
-
-          $location.path('/consultar');
-        })
-        .catch(function(response) {
-          $ionicPopup.alert({
-            title: 'Error',
-            content: response.data ? response.data || response.data.message : response
-          })
-
-        });
-    };
-
-
-    $scope.logout = function() {
-      $auth.logout();
-    };
-
-    $scope.isAuthenticated = function() {
-      return $auth.isAuthenticated();
-    };
-  });
+  

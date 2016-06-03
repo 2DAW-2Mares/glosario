@@ -1,31 +1,18 @@
-<!-- definiciones.html -->
+<!-- Pantalla de definiciones -->
 
-<ion-view id="definiciones">
-
-	<ion-header-bar align-title="center" class="bar-positive">
-		<div class="buttons">
-			<button class="button-clear" style="color:#ffffff;" ng-click="volver()">
-			  <i class="ion-arrow-left-b" style="color:#ffffff;"></i> Volver
-			</button>
-		</div>
-		<div class="buttons pull-right">
-			<button class="button-clear" style="color:#ffffff; font-size:1.4em;"  ng-click="modal.show()">
-			  <i class="ion-ios-plus"></i> AGREGAR DEFINICION
-			</button>
-		</div>
-    </ion-header-bar>
-
+<ion-view id="definiciones" title="Definiciones">
+ 	
     <ion-content padding="true" class="has-header" has-header="true">
-    	<h1 class="text-center" style="color:#000000;" ng-model="nombreTermino">{{nombreTermino}}</h1>
+
+		<h1 class=" text-center" style="color:#000000;" ng-model="nombreTermino">{{nombreTermino}}</h1>
 
 		<ion-list option-buttons="itemButtons" can-swipe="true">
-			<label class="item item-divider">
+			<label class="item item-button-right">
     			<b>Listado</b>
+    			<button class="button button-positive" ng-click="modal.show()">
+			      <i class="icon ion-ios-plus"></i>
+			    </button>
   			</label>
-
-  			<ion-item ng-if="list.length == 0">
-				Press <i class="icon ion-ios7-plus-outline"></i> to add item
-			</ion-item>
 
 			<div class="list card">
 			  <div class="item item-body" ng-repeat="definicion in definiciones">
@@ -38,14 +25,7 @@
 			    </p>
 			  </div>
 			</div>
-			
-			<!--
-			<ion-item ng-repeat="definicion in definiciones">		
-
-	  			{{ definicion.definicion }}
-
-			</ion-item>
-			-->
 		</ion-list>
+
 	</ion-content>
 </ion-view>

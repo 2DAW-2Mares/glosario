@@ -1,31 +1,18 @@
+<!-- Pantalla de Busqueda Directa -->
 
-
-<ion-view id="busquedaDirecta">
-
-	<ion-header-bar align-title="center" class="bar-positive">
-      <div class="buttons">
-        <button class="button-clear" style="color:#ffffff;" ng-click="volverConsultar()">
-          <i class="ion-arrow-left-b" style="color:#ffffff;"></i> Volver</button>
-      </div> 
-    </ion-header-bar>
+<ion-view id="busquedaDirecta" title="Busqueda Directa">
 
     <ion-content padding="true" class="has-header text-center" has-header="true">
-    	<h2 class="text-center" style="color:#000000;">Busqueda Directa</h2>
-		
-
+ 
 		<label class="item item-input">
 			<input type="search" placeholder="Escribe un indício" class="text-center" style="font-size:1.5em;" ng-model="miBusqueda">
-		</label>
-
-		<br/>
+		</label><br/>
 
 		<div>
 			<button class="button button-positive" ng-model="miBusqueda" ng-click="busqueda(miBusqueda)">
 			  BUSCAR COINCIDENCIAS
 			</button>
-		</div>
-
-		<br/>
+		</div><br/>
 
 		<label class="item item-divider">
 			<b>Resultados:</b>

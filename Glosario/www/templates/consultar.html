@@ -1,41 +1,11 @@
-<!--
-  This template loads for the 'ListExample' state (app.js)
--->
-<ion-view id="consultar">
-    <ion-header-bar align-title="center" class="bar-positive">
-      <div class="buttons">
-        <button class="button button-icon icon ion-android-contact" ng-click="toggleDrawer()"></button>
-      </div>
-      <h1 class="title">GLOSARIO</h1>
-    </ion-header-bar>
-    <!--
-      <div class="buttons">
-        <button class="button-clear" ng-click="myGoBack()">
-          <i class="ion-arrow-left-c"></i> Back</button>
-      </div>
-      --> 
+<!-- Pantalla de consultar -->
 
-    <drawer side="right" style="background-color: #D9D9D9 !important">
-      <ion-header-bar align-title="center" class="bar-positive">
-        <h1 class="title">Menu de Usuario</h1>
-        <button class="button button-icon ion-reply" ng-click="toggleDrawer()"></button>
-      
-      </ion-header-bar>
-      <ion-content>
-        <ion-list class="bet-type-list">
-          <ion-item ng-click="modal.show()" style="font-size:1.4em;"><i class="ion-ios-plus"></i>  AGREGAR TERMINO</ion-item>
-        </ion-list>
-      </ion-content>
-    </drawer>
+<ion-view id="consultar" title="Consultar">
 
-    <ion-content padding="true" class="has-header text-center" has-header="true" >
-      <h1 id="pagina1-heading1" style="color:#000000;">GLOSARIO</h1>
-      <div class="button-bar"></div>
-      <div id="markdown1" style="color:#000000;">
-          <p>Bienvenido a <b>Glosario</b>
-          </p>
-      </div>
+  <ion-content class="has-header padding text-center">
 
+      <div id="markdown1" style="color:#000000;"><p>Bienvenido a <b>Glosario</b></p></div>
+      <br/>
       <div>
         <button class="button button-positive" modal-select="" ng-model="listadoDeConsulta" options="selectables" modal-title="Seleccione una Opción" option-getter="getOpciones(option)" on-select="miSeleccionOpciones(newValue, oldValue)" hide-reset="true">
             Selecciona una Opción
@@ -43,27 +13,8 @@
              {{option.enunciado}}
             </div>
         </button>
-
       </div>
 
-      <div class="padding">
-        {{accessToken}}
-        <button class="button button-block button-stable">
-            Do Something
-        </button>
-      </div>
-
-      <div>
-        <br/>
-        <br/>
-        <button ng-click="login()" class="button button-positive">
-            Login Via Google
-        </button>                        
-        <br/>
-        <pre>
-        {{google_data|json}}
-        </pre>
-      </div>
-      
     </ion-content>
+
 </ion-view>
