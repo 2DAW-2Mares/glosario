@@ -32,13 +32,7 @@ angular.module('starter.controllers', [])
 
   	.controller('consultarCtrl', function ($scope, $http, $ionicModal, $location, $ionicPopup, listadoDeMaterias) {
   	
-		var config = {
-			headers:
-			{
-		        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
-		        "Access-Control-Allow-Origin": '*'
-			}
-		}
+	
 
   		/*-- Seleccion de Opciones --*/
 
@@ -66,13 +60,7 @@ angular.module('starter.controllers', [])
 
   	.controller('usuarioCtrl', function ($scope, $http, $ionicModal, $location, $ionicPopup, listadoDeMaterias) {
 
-  		var config = {
-			headers:
-			{
-		        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
-		        "Access-Control-Allow-Origin": '*'
-			}
-		}
+  		
 
   		/*-- Código para agregar término ($ionicModal) --*/
 
@@ -87,7 +75,7 @@ angular.module('starter.controllers', [])
 		$scope.materiasDisponibles = [];
 
 		/*-- Es necesario cargar la lista de materias para asignar una al nuevo término --*/
-		$http.get("http://localhost:1337/materia", config)
+		$http.get("http://localhost:1337/materia")
 		.success(function(data){
 			$scope.materiasDisponibles = data;
 			console.log(data);
@@ -112,7 +100,7 @@ angular.module('starter.controllers', [])
 			    $http.post("http://localhost:1337/termino",{
 					nombre: $scope.nuevoNombre,
 					materia: $scope.nuevoId
-					},config)
+					})
 					.success(function(data,status,headers,config){
 					console.log(data);
 				})
@@ -149,17 +137,11 @@ angular.module('starter.controllers', [])
     		$location.path('/consultar');
   		}
 
-		var config = {
-			headers:
-			{
-		        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
-		        "Access-Control-Allow-Origin": '*'
-			}
-		}
+		
 
 	    $scope.listado =[];
 
-		$http.get("http://localhost:1337/ultimos", config)
+		$http.get("http://localhost:1337/ultimos")
 		.success(function(data){
 			$scope.listado = data;
 			console.log(data);
@@ -189,17 +171,11 @@ angular.module('starter.controllers', [])
     		$location.path('/consultar');
   		}
 
-		var config = {
-			headers:
-			{
-		        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
-		        "Access-Control-Allow-Origin": '*'
-			}
-		}
+		
 
 		$scope.materiasDisponibles = [];
 
-		$http.get("http://localhost:1337/materia", config)
+		$http.get("http://localhost:1337/materia")
 		.success(function(data){
 			$scope.materiasDisponibles = data;
 			console.log(data);
@@ -226,19 +202,6 @@ angular.module('starter.controllers', [])
 
   	.controller('terminosPorMateriaCtrl', function($scope, $ionicModal, $http, $location, listadoDeMaterias, terminoElegido) {
 
-  		/* Botón Volver a consultar*/
-  		$scope.volverConsultar = function() {
-    		$location.path('/materia');
-  		}
-
-  		var config = {
-			headers:
-
-			{
-		        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
-		        "Access-Control-Allow-Origin": '*'
-			}
-		}
 
   		$scope.idMateria = listadoDeMaterias.datosGlobales.idMateria;
   		$scope.nombreMateria = listadoDeMaterias.datosGlobales.nombreMateria;
@@ -247,7 +210,7 @@ angular.module('starter.controllers', [])
   		
 	    $scope.terminosPorMateria =[];
 
-		$http.get("http://localhost:1337/materia/"+$scope.idMateria+"/ultimos", config)
+		$http.get("http://localhost:1337/materia/"+$scope.idMateria+"/ultimos")
 		.success(function(data){
 			$scope.terminosPorMateria = data;
 			console.log(data);
@@ -271,26 +234,13 @@ angular.module('starter.controllers', [])
 
   	.controller('busquedaDirectaCtrl', function($scope, $ionicModal, $http, $location, $ionicPopup,terminoElegido) {
 
-  		/* Botón Volver a consultar*/
-  		$scope.volverConsultar = function() {
-    		$location.path('/consultar');
-  		}
-
-		var config = {
-			headers:  {
-		        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
-		        "Access-Control-Allow-Origin": '*'
-			}
-		}
-
-		
 		$scope.busqueda = function(miBusqueda) {
 			console.log(miBusqueda);
 			if(miBusqueda){
 				$scope.valorIntroducido = miBusqueda;
 				$scope.listado = null;
 
-				$http.get("http://localhost:1337/search/"+$scope.valorIntroducido, config)
+				$http.get("http://localhost:1337/search/"+$scope.valorIntroducido)
 				.success(function(data){
 					
 					if(data != ''){
@@ -335,13 +285,7 @@ angular.module('starter.controllers', [])
 
 	})
 
-  	.controller('definicionesCtrl',
-  		function($scope, $ionicModal, $http,$ionicHistory, $ionicPopup, terminoElegido) {
-
-  		/* Botón Volver */
-  		$scope.volver = function() {
-    		$ionicHistory.goBack();
-  		}
+  	.controller('definicionesCtrl', function($scope, $ionicModal, $http,$ionicHistory, $ionicPopup, terminoElegido) {
 
   		/*-- Código para agregar definición ($ionicModal) --*/
 
@@ -354,19 +298,13 @@ angular.module('starter.controllers', [])
   		$scope.idTermino = terminoElegido.datosGlobales.idTermino;
   		$scope.nombreTermino = terminoElegido.datosGlobales.nombreTermino;
 
-  		var config = {
-			headers:  {
-		        'Authorization': 'Basic YWRtaW46YWRtaW4xMjM0',
-		        "Access-Control-Allow-Origin": '*'
-			}
-		}
   		// Obtener definiciones
   		
 	    $scope.definiciones =[];
 
 	    $scope.getDefiniciones = function() {
 
-			$http.get("http://localhost:1337/termino/"+$scope.idTermino+"/definiciones", config)
+			$http.get("http://localhost:1337/termino/"+$scope.idTermino+"/definiciones")
 			.success(function(data){
 				$scope.definiciones = data;
 				console.log(data);
@@ -397,7 +335,7 @@ angular.module('starter.controllers', [])
 
 			    $http.post("http://localhost:1337/termino/"+$scope.idTermino+"/agregar",{
 					definicion: $scope.nuevaDef
-					},config)
+					})
 					.success(function(data,status,headers,config){
 					console.log(data);
 					$scope.getDefiniciones();
@@ -426,6 +364,130 @@ angular.module('starter.controllers', [])
 
 		};
 
+		/*-- Código para denunciar una definición --*/
+
+		$scope.denunciarDefinicion = function(idDefinicion, denunciaDefinicion) {
+	
+			if(denunciaDefinicion == false){
+
+				var confirmPopup = $ionicPopup.confirm({
+				title: 'Denunciar Definición',
+				template: '¿Estás seguro que deseas denunciar esta definición?'
+				});
+				confirmPopup.then(function(res) {
+					if(res) {
+
+						$http.put("http://localhost:1337/definicion/"+idDefinicion+"/denunciar")
+						.success(function(data,status,headers,config){
+							console.log(data);
+
+							var alertPopupPromise = $ionicPopup.alert({
+								title: '¡Definición Denunciada!',
+								template: 'Hemos recibido tu denuncia satisfactoriamente. Pronto un profesor se encargará de evaluar el contenido de esta definición.',
+								okText: 'Aceptar',
+								okType: 'button-positive'
+							});
+
+							$scope.getDefiniciones();
+							
+						})
+							.error(function(err,status,headers,config){
+							console.log(err);
+						});
+					 
+					} else {
+					 console.log('Has cambiado de opinión');
+					}
+				});
+
+			}
+
+		};
+
+		/*-- Código para valorar una definición --*/
+
+		$ionicModal.fromTemplateUrl('templates/agregarPuntuacion.html', {
+			scope: $scope
+		}).then(function(puntuacion) {
+			$scope.puntuacion = puntuacion;
+		});
+
+
+		$scope.ratingArr = [{
+			value: 1,
+			icon: 'ion-ios-star-outline'
+		},
+		{
+			value: 2,
+			icon: 'ion-ios-star-outline'
+		},
+		{
+			value: 3,
+			icon: 'ion-ios-star-outline'
+		},
+		{
+			value: 4,
+			icon: 'ion-ios-star-outline'
+		},
+		{
+			value: 5,
+			icon: 'ion-ios-star-outline'
+		}];
+
+		$scope.setRating  = function(val){
+
+			var rtgs= $scope.ratingArr;
+
+			for (var i = 0; i<rtgs.length; i++) {
+				if(i< val){
+					rtgs[i].icon = 'ion-ios-star';
+
+				}else{
+					rtgs[i].icon = 'ion-ios-star-outline';
+
+				}	
+			}
+
+			$scope.valorSeleccionado=val;
+		}
+
+		$scope.valorarDefinicion = function(val){
+			$scope.valoracionConsedida = val;	
+		}
+
   	})
 
-  
+ /* 
+console.log(idDefinicion);
+
+			var confirmPopup = $ionicPopup.confirm({
+				title: 'Asignar valoración',
+				template: '¿Estás seguro que deseas aginar esta puntuación?'
+				});
+				confirmPopup.then(function(res) {
+					if(res) {
+
+						$http.post("http://localhost:1337/definicion/"+idDefinicion+"/valorar")
+						.success(function(data,status,headers,config){
+							console.log(data);
+
+							var alertPopupPromise = $ionicPopup.alert({
+								title: '¡Definición Denunciada!',
+								template: 'Hemos recibido tu denuncia satisfactoriamente. Pronto un profesor se encargará de evaluar el contenido de esta definición.',
+								okText: 'Aceptar',
+								okType: 'button-positive'
+							});
+
+							$scope.getDefiniciones();
+							
+						})
+							.error(function(err,status,headers,config){
+							console.log(err);
+						});
+					 
+					} else {
+					 console.log('Has cambiado de opinión');
+					}
+				});
+
+*/

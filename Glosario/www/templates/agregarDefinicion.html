@@ -8,14 +8,21 @@
         </ion-header-bar>
 
         <ion-content class="padding">
+          <br/>
           <div class="list">
+
             <label class="item item-input">
               <span class="input-label">Escribe un definición: </span>
               <input ng-model="nuevaDefinicion.definicion" type="text">
             </label>
- 
-            <button class="button button-full button-positive" ng-click="crearDefinicion(nuevaDefinicion)">AÑADIR</button>
+
+            <br/>
+            
+            <div class="padding text-center">            
+              <button class="button button-positive" ng-click="crearDefinicion(nuevaDefinicion)">AÑADIR</button>
+            </div>
           </div>
+
         </ion-content>
 
 </ion-modal-view>

@@ -1,0 +1,28 @@
+<!-- Pantalla Emergente Agregar Definición-->
+
+<ion-modal-view>
+
+        <ion-header-bar class="bar bar-header bar-positive">
+          <h1 class="title">Valorar Definición</h1>
+          <button class="button button-clear button-primary" ng-click="puntuacion.hide()">Cancel</button>
+        </ion-header-bar>
+
+        <ion-content class="padding">
+
+          <div class="padding text-center">
+            
+            <div class="padding">
+              <a href="javascript:" ng-repeat="r in ratingArr" class="padding" style="text-decoration: none;">
+                <i class="iconos_grandes icon {{r.icon}}" ng-click="setRating(r.value)" value="r.value"></i>
+              </a>
+            </div>
+
+            <div class="padding">
+              <button class="button button-positive" ng-click="valorarDefinicion(valorSeleccionado)">VALORAR</button>
+            </div>
+
+          </div>
+
+        </ion-content>
+
+</ion-modal-view>

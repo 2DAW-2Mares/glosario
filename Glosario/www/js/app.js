@@ -150,17 +150,21 @@ angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.co
   
 
   })
-  .run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
+  
+  .run(function($ionicPlatform, $http) {
 
-    if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
-    }
-    if (window.StatusBar) {
-      StatusBar.styleDefault();
-    }
-  });
+    $http.defaults.headers.common.Authorization = 'Basic YWRtaW46YWRtaW4xMjM0';
+
+    $ionicPlatform.ready(function() {
+
+      if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        cordova.plugins.Keyboard.disableScroll(true);
+      }
+      if (window.StatusBar) {
+        StatusBar.styleDefault();
+      }
+    });
 })
 
   
