@@ -10,3 +10,12 @@
 .iconos_grandes{
     font-size: 3em;
 }
+
+.denunciado{
+    background-color: #CBCBCB;
+    color:#939393;
+}
+
+.normal{
+    background-color: #fff;
+}

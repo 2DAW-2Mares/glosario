@@ -58,10 +58,9 @@ angular.module('starter.controllers', [])
 
   	
 
-  	.controller('usuarioCtrl', function ($scope, $http, $ionicModal, $location, $ionicPopup, listadoDeMaterias) {
+  	.controller('usuarioCtrl', function ($scope, $http, $ionicModal, $location, $ionicPopup, $ionicHistory, listadoDeMaterias) {
 
   		
-
   		/*-- Código para agregar término ($ionicModal) --*/
 
 		$ionicModal.fromTemplateUrl('templates/agregarTermino.html', {
@@ -116,6 +115,7 @@ angular.module('starter.controllers', [])
 				});
 
 			    $scope.modal.hide();
+			    $ionicHistory.clearCache();
 
 			}else{
 				var alertPopupPromise = $ionicPopup.alert({
@@ -130,14 +130,7 @@ angular.module('starter.controllers', [])
 
   	})
 
-  	.controller('ultimosCtrl', function($scope, $ionicModal, $http, $location, $ionicHistory, terminoElegido) {
-
-  		/* Botón Volver a consultar*/
-  		$scope.volverConsultar = function() {
-    		$location.path('/consultar');
-  		}
-
-		
+  	.controller('ultimosCtrl', function($scope, $ionicModal, $http, $location, terminoElegido) {
 
 	    $scope.listado =[];
 
@@ -164,14 +157,7 @@ angular.module('starter.controllers', [])
 
 	})
 
-	.controller('materiaCtrl', function($scope, $ionicModal, $http, $location, $ionicHistory, listadoDeMaterias) {
-
-  		/* Botón Volver a consultar*/
-  		$scope.volverConsultar = function() {
-    		$location.path('/consultar');
-  		}
-
-		
+	.controller('materiaCtrl', function($scope, $ionicModal, $http, $location, listadoDeMaterias) {
 
 		$scope.materiasDisponibles = [];
 
@@ -400,11 +386,31 @@ angular.module('starter.controllers', [])
 					}
 				});
 
+			}else if(denunciaDefinicion == true){
+
+				var alertPopupPromise = $ionicPopup.alert({
+					title: '¡Definición Denunciada!',
+					template: 'Esta definición ya ha sido denunciada. ',
+					okText: 'Aceptar',
+					okType: 'button-positive'
+				});
+
 			}
 
 		};
 
 		/*-- Código para valorar una definición --*/
+
+		/*comprobar valorados:
+
+		$http.get("http://localhost:1337/valoracion/"+$scope.idTermino)
+		.success(function(data){
+			console.log(data);
+		})
+		.error(function(err){
+			console.log(err);
+		});
+		*/
 
 		$ionicModal.fromTemplateUrl('templates/agregarPuntuacion.html', {
 			scope: $scope
@@ -451,33 +457,54 @@ angular.module('starter.controllers', [])
 			$scope.valorSeleccionado=val;
 		}
 
-		$scope.valorarDefinicion = function(val){
-			$scope.valoracionConsedida = val;	
+		$scope.valoracion = function(idDefinicion, denunciaDefinicion){
+
+			if(denunciaDefinicion == false){
+
+				$scope.idDefinicionSeleccionada = idDefinicion;
+				$scope.puntuacion.show($scope.idDefinicionSeleccionada);
+
+			}else if(denunciaDefinicion == true){
+
+				var alertPopupPromise = $ionicPopup.alert({
+					title: '¡Definición Denunciada!',
+					template: 'Esta definición ha sido denunciada. No es posible asignar una puntuación hasta su posterior revisión. ',
+					okText: 'Aceptar',
+					okType: 'button-positive'
+				});
+
+			}
+
 		}
 
-  	})
+		$scope.valorarDefinicion = function(val, idDefinicionSeleccionada){
 
- /* 
-console.log(idDefinicion);
+			$scope.valoracionConsedida = val;
+			$scope.idSeleccionadaLista = idDefinicionSeleccionada;
+			//console.log($scope.valoracionConsedida);
+			//console.log($scope.idSeleccionadaLista);
 
 			var confirmPopup = $ionicPopup.confirm({
-				title: 'Asignar valoración',
+				title: 'Valorar Definición',
 				template: '¿Estás seguro que deseas aginar esta puntuación?'
 				});
 				confirmPopup.then(function(res) {
 					if(res) {
 
-						$http.post("http://localhost:1337/definicion/"+idDefinicion+"/valorar")
+						$http.post("http://localhost:1337/definicion/"+$scope.idSeleccionadaLista+"/valorar",{
+						valoracion: $scope.valoracionConsedida
+						})
 						.success(function(data,status,headers,config){
 							console.log(data);
 
 							var alertPopupPromise = $ionicPopup.alert({
-								title: '¡Definición Denunciada!',
-								template: 'Hemos recibido tu denuncia satisfactoriamente. Pronto un profesor se encargará de evaluar el contenido de esta definición.',
+								title: '¡Definición Valorada!',
+								template: 'Hemos recibido tu valoración satisfactoriamente.',
 								okText: 'Aceptar',
 								okType: 'button-positive'
 							});
 
+							$scope.puntuacion.hide();
 							$scope.getDefiniciones();
 							
 						})
@@ -489,5 +516,7 @@ console.log(idDefinicion);
 					 console.log('Has cambiado de opinión');
 					}
 				});
+		}
 
-*/
+  	})
+

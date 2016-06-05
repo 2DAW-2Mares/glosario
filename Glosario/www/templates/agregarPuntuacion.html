@@ -12,13 +12,14 @@
           <div class="padding text-center">
             
             <div class="padding">
+
               <a href="javascript:" ng-repeat="r in ratingArr" class="padding" style="text-decoration: none;">
                 <i class="iconos_grandes icon {{r.icon}}" ng-click="setRating(r.value)" value="r.value"></i>
               </a>
             </div>
 
             <div class="padding">
-              <button class="button button-positive" ng-click="valorarDefinicion(valorSeleccionado)">VALORAR</button>
+              <button class="button button-positive" ng-model="idDefinicionSeleccionada" ng-click="valorarDefinicion(valorSeleccionado, idDefinicionSeleccionada)">VALORAR</button>
             </div>
 
           </div>

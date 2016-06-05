@@ -150,7 +150,7 @@ angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.co
   
 
   })
-  
+
   .run(function($ionicPlatform, $http) {
 
     $http.defaults.headers.common.Authorization = 'Basic YWRtaW46YWRtaW4xMjM0';
