@@ -284,7 +284,7 @@ angular.module('starter.controllers', [])
   		$scope.idTermino = terminoElegido.datosGlobales.idTermino;
   		$scope.nombreTermino = terminoElegido.datosGlobales.nombreTermino;
 
-  		// Obtener definiciones
+  		/*-- Código para obtener una nueva definición --*/
   		
 	    $scope.definiciones =[];
 
@@ -293,8 +293,6 @@ angular.module('starter.controllers', [])
 			$http.get("http://localhost:1337/termino/"+$scope.idTermino+"/definiciones")
 			.success(function(data){
 				$scope.definiciones = data;
-
-
 				console.log(data);
 			})
 			.error(function(err){
@@ -326,20 +324,21 @@ angular.module('starter.controllers', [])
 					})
 					.success(function(data,status,headers,config){
 					console.log(data);
+
+					var alertPopupPromise = $ionicPopup.alert({
+						title: '¡Correcto!',
+						template: 'Tu definicion se ha creado correctamente',
+						okText: 'Aceptar',
+						okType: 'button-positive'
+					});
+
+					$scope.nuevaDefinicion.definicion='';
+				    $scope.modal.hide();
 					$scope.getDefiniciones();
 				})
 					.error(function(err,status,headers,config){
 					console.log(err);
 				});
-
-				var alertPopupPromise = $ionicPopup.alert({
-					title: '¡Correcto!',
-					template: 'Tu definicion se ha creado correctamente',
-					okText: 'Aceptar',
-					okType: 'button-positive'
-				});
-
-			    $scope.modal.hide();
 
 			}else{
 				var alertPopupPromise = $ionicPopup.alert({
@@ -517,7 +516,7 @@ angular.module('starter.controllers', [])
 							okText: 'Aceptar',
 							okType: 'button-positive'
 						});
-
+						
 						$scope.puntuacion.hide();
 						$scope.getDefiniciones();
 						

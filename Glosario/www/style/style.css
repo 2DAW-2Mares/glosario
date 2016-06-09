@@ -11,7 +11,7 @@
     font-size: 3em;
 }
 
-.denunciado{
+.marcado{
     background-color: #CBCBCB;
     color:#939393;
 }
@@ -19,3 +19,5 @@
 .normal{
     background-color: #fff;
 }
+
+.media{display: inline;font-size: 1.5em;}
