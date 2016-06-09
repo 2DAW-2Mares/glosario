@@ -39,17 +39,6 @@ angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.co
       }
     })
 
-    .state('tab.usuario', {
-      url: '/usuario',
-      views: {
-        'usuario': {
-          templateUrl: 'templates/usuario.html',
-          controller: 'usuarioCtrl'
-        }
-      }
-    })
-
-
     .state('tab.ultimos', {
       url: '/ultimos',
       views: {
@@ -96,6 +85,26 @@ angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.co
         'consultar': {
           templateUrl: 'templates/definiciones.html',
           controller: 'definicionesCtrl'
+        }
+      }
+    })
+
+    .state('tab.usuario', {
+      url: '/usuario',
+      views: {
+        'usuario': {
+          templateUrl: 'templates/usuario.html',
+          controller: 'usuarioCtrl'
+        }
+      }
+    })
+
+    .state('tab.definicionesDenunciadas', {
+      url: '/definicionesDenunciadas',
+      views: {
+        'usuario': {
+          templateUrl: 'templates/definicionesDenunciadas.html',
+          controller: 'definicionesDenunciadasCtrl'
         }
       }
     })

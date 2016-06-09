@@ -14,8 +14,8 @@
 		<ion-list option-buttons="itemButtons" can-swipe="true">
 			<label class="item item-divider"><b>Listado</b></label>
 
-  			<ion-item class="item item-body" ng-repeat="definicion in definiciones" ng-class="{{definicion.denunciado}} == true ? 'denunciado': 'normal'">		
-
+  			<ion-item class="item item-body" ng-repeat="definicion in definiciones | orderBy:'denunciado' track by definicion.id" ng-class="{{definicion.denunciado}} == true ? 'denunciado': 'normal'">		
+	
 				<div class="concepto_definicion">
 	  			 {{ $index+1 }}: {{ definicion.definicion }}
 	  			</div>
@@ -28,7 +28,9 @@
 		    	<button class="button button-icon" ng-class="{{definicion.denunciado}} == true ? 'black': 'positive'" ng-click="valoracion(definicion.id, definicion.denunciado)">
 		      		<i class="icon ion-thumbsup"></i>
 		    	</button>
-	  	
+
+		    	<div>{{definicion.media}} ({{definicion.valoraciones.length}})</div>
+
 			</ion-item>
 
 		</ion-list>

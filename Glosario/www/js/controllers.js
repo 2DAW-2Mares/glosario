@@ -271,7 +271,7 @@ angular.module('starter.controllers', [])
 
 	})
 
-  	.controller('definicionesCtrl', function($scope, $ionicModal, $http,$ionicHistory, $ionicPopup, terminoElegido) {
+  	.controller('definicionesCtrl', function($scope, $ionicModal, $http, $ionicHistory, $ionicPopup, terminoElegido) {
 
   		/*-- Código para agregar definición ($ionicModal) --*/
 
@@ -293,6 +293,8 @@ angular.module('starter.controllers', [])
 			$http.get("http://localhost:1337/termino/"+$scope.idTermino+"/definiciones")
 			.success(function(data){
 				$scope.definiciones = data;
+
+
 				console.log(data);
 			})
 			.error(function(err){
@@ -300,7 +302,7 @@ angular.module('starter.controllers', [])
 			});
 		}
 
-		$scope.getDefiniciones();		
+		$scope.getDefiniciones();
 
 		/*-- Código para crear una nueva definición --*/
 
@@ -401,16 +403,6 @@ angular.module('starter.controllers', [])
 
 		/*-- Código para valorar una definición --*/
 
-		/*comprobar valorados:
-
-		$http.get("http://localhost:1337/valoracion/"+$scope.idTermino)
-		.success(function(data){
-			console.log(data);
-		})
-		.error(function(err){
-			console.log(err);
-		});
-		*/
 
 		$ionicModal.fromTemplateUrl('templates/agregarPuntuacion.html', {
 			scope: $scope
@@ -440,7 +432,7 @@ angular.module('starter.controllers', [])
 			icon: 'ion-ios-star-outline'
 		}];
 
-		$scope.setRating  = function(val){
+		$scope.setRating = function(val){
 
 			var rtgs= $scope.ratingArr;
 
@@ -459,63 +451,85 @@ angular.module('starter.controllers', [])
 
 		$scope.valoracion = function(idDefinicion, denunciaDefinicion){
 
-			if(denunciaDefinicion == false){
+			$scope.idDefinicionSeleccionada = idDefinicion;
 
-				$scope.idDefinicionSeleccionada = idDefinicion;
-				$scope.puntuacion.show($scope.idDefinicionSeleccionada);
+			/*
+			$http.get("http://localhost:1337/definicion/"+$scope.idDefinicionSeleccionada+"/valoraciones")
+			.success(function(data){
+				$scope.comprobandoValoracion = data;
+				console.log($scope.comprobandoValoracion);
 
-			}else if(denunciaDefinicion == true){
+				if($scope.comprobandoValoracion == 0){
+			*/
+					if(denunciaDefinicion == false){
 
-				var alertPopupPromise = $ionicPopup.alert({
-					title: '¡Definición Denunciada!',
-					template: 'Esta definición ha sido denunciada. No es posible asignar una puntuación hasta su posterior revisión. ',
+						$scope.puntuacion.show($scope.idDefinicionSeleccionada);
+
+					}else if(denunciaDefinicion == true){
+
+						var alertPopupPromise = $ionicPopup.alert({
+							title: '¡Definición Denunciada!',
+							template: 'Esta definición ha sido denunciada. No es posible asignar una puntuación hasta su posterior revisión. ',
+							okText: 'Aceptar',
+							okType: 'button-positive'
+						});
+					}
+			/*
+				}else{
+
+					var alertPopupPromise = $ionicPopup.alert({
+					title: '¡Definición ya valorada!',
+					template: 'Esta definición ya ha sido valorada.',
 					okText: 'Aceptar',
 					okType: 'button-positive'
-				});
+					});
 
-			}
+				}
+			})
+			.error(function(err){
+				console.log(err);
+			});
 
+			*/
 		}
 
 		$scope.valorarDefinicion = function(val, idDefinicionSeleccionada){
 
 			$scope.valoracionConsedida = val;
 			$scope.idSeleccionadaLista = idDefinicionSeleccionada;
-			//console.log($scope.valoracionConsedida);
-			//console.log($scope.idSeleccionadaLista);
 
 			var confirmPopup = $ionicPopup.confirm({
-				title: 'Valorar Definición',
-				template: '¿Estás seguro que deseas aginar esta puntuación?'
-				});
-				confirmPopup.then(function(res) {
-					if(res) {
+			title: 'Valorar Definición',
+			template: '¿Estás seguro que deseas aginar esta puntuación?'
+			});
+			confirmPopup.then(function(res) {
+				if(res) {
 
-						$http.post("http://localhost:1337/definicion/"+$scope.idSeleccionadaLista+"/valorar",{
-						valoracion: $scope.valoracionConsedida
-						})
-						.success(function(data,status,headers,config){
-							console.log(data);
+					$http.post("http://localhost:1337/definicion/"+$scope.idSeleccionadaLista+"/valorar",{
+					valoracion: $scope.valoracionConsedida
+					})
+					.success(function(data,status,headers,config){
+						console.log(data);
 
-							var alertPopupPromise = $ionicPopup.alert({
-								title: '¡Definición Valorada!',
-								template: 'Hemos recibido tu valoración satisfactoriamente.',
-								okText: 'Aceptar',
-								okType: 'button-positive'
-							});
-
-							$scope.puntuacion.hide();
-							$scope.getDefiniciones();
-							
-						})
-							.error(function(err,status,headers,config){
-							console.log(err);
+						var alertPopupPromise = $ionicPopup.alert({
+							title: '¡Definición Valorada!',
+							template: 'Hemos recibido tu valoración satisfactoriamente.',
+							okText: 'Aceptar',
+							okType: 'button-positive'
 						});
-					 
-					} else {
-					 console.log('Has cambiado de opinión');
-					}
-				});
+
+						$scope.puntuacion.hide();
+						$scope.getDefiniciones();
+						
+					})
+						.error(function(err,status,headers,config){
+						console.log(err);
+					});
+				 
+				} else {
+				 console.log('Has cambiado de opinión');
+				}
+			});
 		}
 
   	})
