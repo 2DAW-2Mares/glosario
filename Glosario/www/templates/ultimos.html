@@ -2,17 +2,18 @@
 
 <ion-view id="ultimos" title="Ultimos Términos">
 
-    <ion-content padding="true" class="has-header" has-header="true">
+    <ion-content padding="true" class="fondo1 has-header" has-header="true">
     	<br/>
 		<ion-list option-buttons="itemButtons" can-swipe="true">
 
 			<label class="item item-divider"><b>Listado</b></label>
 
-			<ion-item ng-repeat="termino in listado" ng-model="terminoSelecionado">		
+			<ion-item ng-repeat="termino in listado" ng-model="terminoSelecionado" class="item item-icon-right">		
 
-				<div ng-click="select_item(termino)">
-	  			 {{ termino.nombre }}
+				<div ng-click="select_item(termino)" >
+					{{ termino.nombre }} <i class="icon ion-chevron-right"></i> 
 	  			</div>
+
 
 			</ion-item>
 

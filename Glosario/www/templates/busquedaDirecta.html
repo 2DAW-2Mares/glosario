@@ -1,27 +1,29 @@
 <!-- Pantalla de Busqueda Directa -->
 
-<ion-view id="busquedaDirecta" title="Busqueda Directa">
+<ion-view id="busquedaDirecta" title=" Busqueda Directa">
 
-    <ion-content padding="true" class="has-header text-center" has-header="true">
- 
-		<label class="item item-input">
-			<input type="search" placeholder="Escribe un indício" class="text-center" style="font-size:1.5em;" ng-model="miBusqueda">
-		</label><br/>
+    <ion-content padding="true" class="fondo1 has-header" has-header="true">
+ 		<br/>
+ 		<div class="padding text-center">
+			<label class="item item-input">
+				<input type="search" placeholder="Escribe un indício" class="text-center" style="font-size:1.5em;" ng-model="miBusqueda">
+			</label><br/>
 
-		<div>
-			<button class="button button-positive" ng-model="miBusqueda" ng-click="busqueda(miBusqueda)">
-			  BUSCAR COINCIDENCIAS
-			</button>
-		</div><br/>
-
-		<label class="item item-divider">
+			<div>
+				<button class="button button-light" ng-model="miBusqueda" ng-click="busqueda(miBusqueda)">
+				  BUSCAR COINCIDENCIAS
+				</button>
+			</div>
+		</div>
+		<br/>
+		<label class="item item-divider text-center padding">
 			<b>Resultados:</b>
 		</label>
 
-		<ion-item ng-repeat="termino in listado" ng-model="terminoPorBusquedaDirecta">		
+		<ion-item ng-repeat="termino in listado" ng-model="terminoPorBusquedaDirecta" class="item item-icon-right">		
 
 			<div ng-click="select_item(termino)">
-  			 {{ termino.nombre }}
+  			 {{ termino.nombre }} <i class="icon ion-chevron-right"></i> 
   			</div>
 
 		</ion-item>

@@ -230,8 +230,7 @@ angular.module('starter.controllers', [])
 				.success(function(data){
 					
 					if(data != ''){
-						$scope.listado = data;
-						
+						$scope.listado = data;					
 					}else{
 						var alertPopupPromise = $ionicPopup.alert({
 							title: 'Alerta',
@@ -516,7 +515,7 @@ angular.module('starter.controllers', [])
 							okText: 'Aceptar',
 							okType: 'button-positive'
 						});
-						
+
 						$scope.puntuacion.hide();
 						$scope.getDefiniciones();
 						

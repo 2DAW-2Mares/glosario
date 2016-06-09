@@ -2,20 +2,15 @@
 
 <ion-view id="materia" title="Materias">
    
-    <ion-content padding="true" class="has-header" has-header="true">
+    <ion-content padding="true" class="fondo1 has-header" has-header="true">
     	<br/>
 		<ion-list option-buttons="itemButtons" can-swipe="true">
 
-			<label class="item item-divider">
-    			<div id="markdown1" style="color:#000000;">
-		          <p>Selecciona una materia:</p>
-		      	</div>
-  			</label>
+			<label class="item item-divider"><b>Selecciona un Materia:</b></label>
 
-			<ion-item ng-repeat="materia in materiasDisponibles" ng-model="materiaElegida">		
-
+			<ion-item ng-repeat="materia in materiasDisponibles" ng-model="materiaElegida" class="item item-icon-right">		
 				<div ng-click="miSeleccionMaterias(materia)">
-	  			 {{ materia.materia }}
+	  			 {{ materia.materia }} <i class="icon ion-chevron-right"></i> 
 	  			</div>
 
 			</ion-item>
