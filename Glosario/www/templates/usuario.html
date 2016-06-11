@@ -2,23 +2,26 @@
 
 <ion-view id="usuario" title="Cuenta de Usuario">
 
-    <ion-content class="fondo1 has-header padding text-center">
+  <ion-content class="fondo1 has-header padding">
 
-        <div id="markdown1" style="color:#000000;"><p>Bienvenido <b>usuario</b></p></div>
+    <div id="markdown1" class="text-center titulo3"><h3>Bienvenido <b>usuario</b></h3></div>
 
-        <ion-list option-buttons="itemButtons" can-swipe="true">
+    <ion-list option-buttons="itemButtons" can-swipe="true">
 
-			<label class="item item-divider"><b>Menú de Opciones (Alumno)</b></label>
-			<ion-item ng-click="modal.show()" style="font-size:1.4em;"><i class="ion-ios-plus"></i> AGREGAR TERMINO</ion-item></ion-item>
+    	<label class="item item-divider"><b>Menú de Opciones (Alumno)</b></label>
+    	<ion-item ng-click="modal.show()" style="font-size:1.4em;"><i class="ion-ios-plus"></i> AGREGAR TERMINO</ion-item></ion-item>
 
-      	</ion-list>
-      	<br/>
-      	<ion-list option-buttons="itemButtons" can-swipe="true">
+    </ion-list>
+    
+    <br/>
 
-			<label class="item item-divider"><b>Menú de Opciones (Profesor)</b></label>
-			<ion-item ng-click="modal.show()" style="font-size:1.4em;"><i class="icon ion-android-alert"></i> DEFINICIONES DENUNCIADAS</ion-item></ion-item>
+    <ion-list option-buttons="itemButtons" can-swipe="true">
 
-      	</ion-list>
+    	<label class="item item-divider"><b>Menú de Opciones (Profesor)</b></label>
+    	<ion-item href="#/tab/definicionesDenunciadas" style="font-size:1.4em;"><i class="icon ion-android-alert"></i> DEFINICIONES DENUNCIADAS</ion-item></ion-item>
 
-      </ion-content>
+    </ion-list>
+
+  </ion-content>
+
 </ion-view>

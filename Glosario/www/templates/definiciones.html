@@ -19,7 +19,7 @@
 
 			<div ng-switch on="oculto">
 				<div ng-switch-when="true" class="animate-switch">
-		  			<ion-item class="item item-body" ng-repeat="definicion in definiciones | orderBy:'-media'" ng-class="{{definicion.denunciado}} == true ? 'marcado': 'normal'" >		
+		  			<ion-item class="item item-body" ng-repeat="definicion in definiciones | orderBy:'denunciado'" ng-class="{{definicion.denunciado}} == true ? 'marcado': 'normal'" >		
 					
 						<div class="concepto_definicion">
 			  			 {{ $index+1 }}: {{ definicion.definicion }}
@@ -88,7 +88,7 @@
 					</ion-item>
 				</div>
 				<div ng-switch-default class="animate-switch">
-		  			<ion-item class="item item-body" ng-repeat="definicion in definiciones | orderBy:'-media'" ng-class="{{definicion.denunciado}} == true ? 'marcado': 'normal'" ng-if="definicion.denunciado == false" >		
+		  			<ion-item class="item item-body" ng-repeat="definicion in definiciones | orderBy:'denunciado'" ng-class="{{definicion.denunciado}} == true ? 'marcado': 'normal'" ng-if="definicion.denunciado == false" >		
 					
 						<div class="concepto_definicion">
 			  			 {{ $index+1 }}: {{ definicion.definicion }}

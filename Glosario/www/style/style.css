@@ -7,6 +7,11 @@
     font-size: 2em;
 }
 
+.titulo3 h3{
+    color: #fff;
+    font-size: 1.5em;
+}
+
 .centerme {
     margin: 0 auto;
     width: 100%;
@@ -25,7 +30,11 @@
 }
 
 .icono_derecha{
-    margin-right: -1%;
+    margin-right: 5px;
+}
+
+.icono_derecha2{
+    margin-right: 60px;
 }
 
 .iconos_grandes{
@@ -42,3 +51,7 @@
 }
 
 .media{display: inline;font-size: 1.5em;}
+
+.defDenun{
+    margin-top: 15px;
+}

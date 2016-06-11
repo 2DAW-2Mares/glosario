@@ -10,7 +10,7 @@ angular.module('starter.controllers', [])
 	            content: 'You have successfully logged in!'
 	          })
 
-	          $location.path('/consultar');
+	          $location.path('/tab/consultar');
 	        })
 	        .catch(function(response) {
 	          $ionicPopup.alert({
@@ -55,80 +55,6 @@ angular.module('starter.controllers', [])
 		};
 
      })
-
-  	
-
-  	.controller('usuarioCtrl', function ($scope, $http, $ionicModal, $location, $ionicPopup, $ionicHistory, listadoDeMaterias) {
-
-  		
-  		/*-- Código para agregar término ($ionicModal) --*/
-
-		$ionicModal.fromTemplateUrl('templates/agregarTermino.html', {
-			scope: $scope
-		}).then(function(modal) {
-			$scope.modal = modal;
-		});
-
-		/*-- Código para crear término nuevo --*/
-
-		$scope.materiasDisponibles = [];
-
-		/*-- Es necesario cargar la lista de materias para asignar una al nuevo término --*/
-		$http.get("http://localhost:1337/materia")
-		.success(function(data){
-			$scope.materiasDisponibles = data;
-			console.log(data);
-		})
-		.error(function(err){
-			console.log(err);
-		});
-
-		$scope.nuevoTermino=[];
-		$scope.nuevoTermino.nombre='';
-		$scope.nuevoTermino.id='';
-
-		$scope.crearTermino = function(nuevoTermino) {        
-		
-			console.log(nuevoTermino);
-
-			if($scope.nuevoTermino.nombre!='' && $scope.nuevoTermino.id!=''){
-
-				$scope.nuevoNombre= nuevoTermino.nombre;
-				$scope.nuevoId= nuevoTermino.id;
-
-			    $http.post("http://localhost:1337/termino",{
-					nombre: $scope.nuevoNombre,
-					materia: $scope.nuevoId
-					})
-					.success(function(data,status,headers,config){
-					console.log(data);
-				})
-					.error(function(err,status,headers,config){
-					console.log(err);
-				});
-
-				var alertPopupPromise = $ionicPopup.alert({
-					title: '¡Correcto!',
-					template: 'Tu termino se ha creado correctamente',
-					okText: 'Aceptar',
-					okType: 'button-positive'
-				});
-
-			    $scope.modal.hide();
-			    $ionicHistory.clearCache();
-
-			}else{
-				var alertPopupPromise = $ionicPopup.alert({
-					title: 'Alerta',
-					template: 'Es necesario rellenar todos los campos',
-					okText: 'Cerrar',
-					okType: 'button-dark'
-				});
-			}
-
-		};
-
-  	})
 
   	.controller('ultimosCtrl', function($scope, $ionicModal, $http, $location, terminoElegido) {
 
@@ -375,6 +301,7 @@ angular.module('starter.controllers', [])
 							});
 
 							$scope.getDefiniciones();
+							$ionicHistory.clearCache();
 							
 						})
 							.error(function(err,status,headers,config){
@@ -531,4 +458,172 @@ angular.module('starter.controllers', [])
 		}
 
   	})
+
+  	.controller('usuarioCtrl', function ($scope, $http, $ionicModal, $location, $ionicPopup, $ionicHistory, listadoDeMaterias) {
+
+  		
+  		/*-- Código para agregar término ($ionicModal) --*/
+
+		$ionicModal.fromTemplateUrl('templates/agregarTermino.html', {
+			scope: $scope
+		}).then(function(modal) {
+			$scope.modal = modal;
+		});
+
+		/*-- Código para crear término nuevo --*/
+
+		$scope.materiasDisponibles = [];
+
+		/*-- Es necesario cargar la lista de materias para asignar una al nuevo término --*/
+		$http.get("http://localhost:1337/materia")
+		.success(function(data){
+			$scope.materiasDisponibles = data;
+			console.log(data);
+		})
+		.error(function(err){
+			console.log(err);
+		});
+
+		$scope.nuevoTermino=[];
+		$scope.nuevoTermino.nombre='';
+		$scope.nuevoTermino.id='';
+
+		$scope.crearTermino = function(nuevoTermino) {        
+		
+			console.log(nuevoTermino);
+
+			if($scope.nuevoTermino.nombre!='' && $scope.nuevoTermino.id!=''){
+
+				$scope.nuevoNombre= nuevoTermino.nombre;
+				$scope.nuevoId= nuevoTermino.id;
+
+			    $http.post("http://localhost:1337/termino",{
+					nombre: $scope.nuevoNombre,
+					materia: $scope.nuevoId
+					})
+					.success(function(data,status,headers,config){
+					console.log(data);
+				})
+					.error(function(err,status,headers,config){
+					console.log(err);
+				});
+
+				var alertPopupPromise = $ionicPopup.alert({
+					title: '¡Correcto!',
+					template: 'Tu termino se ha creado correctamente',
+					okText: 'Aceptar',
+					okType: 'button-positive'
+				});
+
+			    $scope.modal.hide();
+			    $ionicHistory.clearCache();
+
+			}else{
+				var alertPopupPromise = $ionicPopup.alert({
+					title: 'Alerta',
+					template: 'Es necesario rellenar todos los campos',
+					okText: 'Cerrar',
+					okType: 'button-dark'
+				});
+			}
+
+		};
+
+  	})
+
+  	.controller('definicionesDenunciadasCtrl', function($scope, $http, $ionicHistory,$ionicPopup) {
+
+  		/*-- Código para obtener las definiciones denunciadas --*/
+  		
+	    $scope.definicionesDenunciadas =[];
+
+	    $scope.getDefinicionesDenunciadas = function() {
+
+			$http.get("http://localhost:1337/denunciadas/")
+			.success(function(data){
+				$scope.definicionesDenunciadas = data;
+			})
+			.error(function(err){
+				console.log(err);
+			});
+		}
+
+		$scope.getDefinicionesDenunciadas();
+
+		/*-- Código para reestablecer la definición denunciada --*/
+
+		$scope.recuperarDefinicion = function(idDefinicion) {
+	
+			var confirmPopup = $ionicPopup.confirm({
+			title: 'Reestablecer Definición',
+			template: '¿Estás seguro que deseas reestablecer esta definición?'
+			});
+			confirmPopup.then(function(res) {
+				if(res) {
+
+					$http.put("http://localhost:1337/definicion/"+idDefinicion,{
+					denunciado: false,
+					})
+					.success(function(data,status,headers,config){
+						console.log(data);
+
+						var alertPopupPromise = $ionicPopup.alert({
+							title: '¡Definición Reestablecida!',
+							template: 'La definición se ha reestablecido correctamente.',
+							okText: 'Aceptar',
+							okType: 'button-positive'
+						});
+
+						$scope.getDefinicionesDenunciadas();
+						$ionicHistory.clearCache();
+						
+					})
+						.error(function(err,status,headers,config){
+						console.log(err);
+					});
+				 
+				} else {
+				 console.log('Has cambiado de opinión');
+				}
+			});
+
+		};
+
+
+		$scope.eliminarDefinicion = function(idDefinicion) {
+
+			var confirmPopup = $ionicPopup.confirm({
+			title: 'Eliminar Definición',
+			template: '¿Estás seguro que deseas eliminar esta definición?'
+			});
+			confirmPopup.then(function(res) {
+				if(res) {
+
+					$http.delete("http://localhost:1337/definicion/"+idDefinicion)
+					.success(function(data,status,headers,config){
+						console.log(data);
+
+						var alertPopupPromise = $ionicPopup.alert({
+							title: '¡Definición Eliminada!',
+							template: 'La definición se ha eliminado correctamente.',
+							okText: 'Aceptar',
+							okType: 'button-positive'
+						});
+
+						$scope.getDefinicionesDenunciadas();
+						$ionicHistory.clearCache();
+						
+					})
+						.error(function(err,status,headers,config){
+						console.log(err);
+					});
+				 
+				} else {
+				 console.log('Has cambiado de opinión');
+				}
+			});
+
+		};
+
+  	})	
 
