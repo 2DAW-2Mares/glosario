@@ -11,155 +11,164 @@
 		      <i class="icon ion-ios-plus"></i>
 		    </button>
 		</div>
+		<div ng-switch on="comprobar">
 
-		<ion-toggle ng-model="oculto" ng-checked="false"> VER DENUNCIADOS</ion-toggle>
+			<div ng-switch-when="true">
+				<ion-toggle ng-model="oculto" ng-checked="false"> VER DENUNCIADOS</ion-toggle>
+				<ion-list option-buttons="itemButtons" can-swipe="true">
+					<label class="item item-divider"><b>Listado</b></label>
 
-		<ion-list option-buttons="itemButtons" can-swipe="true">
-			<label class="item item-divider"><b>Listado</b></label>
+					<div ng-switch on="oculto">
+						<div ng-switch-when="true" class="animate-switch">
+				  			<ion-item class="item item-body" ng-repeat="definicion in definiciones | orderBy:['denunciado','-media','-valoraciones.length']" ng-class="{{definicion.denunciado}} == true ? 'marcado': 'normal'" >		
+							
+								<div class="concepto_definicion">
+					  			 {{ $index+1 }}: {{ definicion.definicion }}
+					  			</div>
+					  			<div class="item-button-right">
+						  			<button class="icono_derecha button button-icon" ng-class="{{definicion.denunciado}} == true ? 'black': 'assertive'" ng-click="denunciarDefinicion(definicion.id, definicion.denunciado)">
+							      		<i class="icon ion-android-alert"></i>
+							    	</button>
+						    	</div>
 
-			<div ng-switch on="oculto">
-				<div ng-switch-when="true" class="animate-switch">
-		  			<ion-item class="item item-body" ng-repeat="definicion in definiciones | orderBy:'denunciado'" ng-class="{{definicion.denunciado}} == true ? 'marcado': 'normal'" >		
-					
-						<div class="concepto_definicion">
-			  			 {{ $index+1 }}: {{ definicion.definicion }}
-			  			</div>
-			  			<div class="item-button-right">
-				  			<button class="icono_derecha button button-icon" ng-class="{{definicion.denunciado}} == true ? 'black': 'assertive'" ng-click="denunciarDefinicion(definicion.id, definicion.denunciado)">
-					      		<i class="icon ion-android-alert"></i>
-					    	</button>
-				    	</div>
+						    	<button class="button button-icon" ng-class="{{definicion.denunciado}} == true ? 'black': 'positive'" ng-click="valoracion(definicion.id, definicion.denunciado)">
+						      		<i class="icon ion-thumbsup"></i>
+						    	</button>
+						    	<br/>
 
-				    	<button class="button button-icon" ng-class="{{definicion.denunciado}} == true ? 'black': 'positive'" ng-click="valoracion(definicion.id, definicion.denunciado)">
-				      		<i class="icon ion-thumbsup"></i>
-				    	</button>
-				    	<br/>
-
-				    	<div ng-switch on="definicion.media">
-				    		<div ng-switch-when="0">
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<span>({{definicion.valoraciones.length}})</span>
-				    		</div>
-						    <div ng-switch-when="1">
-						    	<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<span>({{definicion.valoraciones.length}})</span>
-						    </div>
-						    <div ng-switch-when="2">
-						    	<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>	
-				    			<span>({{definicion.valoraciones.length}})</span>
-						    </div>
-						    <div ng-switch-when="3">
-						    	<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>	
-				    			<span>({{definicion.valoraciones.length}})</span>
-						    </div>
-						    <div ng-switch-when="4">
-						    	<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<span>({{definicion.valoraciones.length}})</span>
-						    </div>
-						    <div ng-switch-when="5">
-						    	<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<span>({{definicion.valoraciones.length}})</span>	
-						    </div>
+						    	<div ng-switch on="definicion.media">
+						    		<div ng-switch-when="0">
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<span>({{definicion.valoraciones.length}})</span>
+						    		</div>
+								    <div ng-switch-when="1">
+								    	<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<span>({{definicion.valoraciones.length}})</span>
+								    </div>
+								    <div ng-switch-when="2">
+								    	<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>	
+						    			<span>({{definicion.valoraciones.length}})</span>
+								    </div>
+								    <div ng-switch-when="3">
+								    	<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>	
+						    			<span>({{definicion.valoraciones.length}})</span>
+								    </div>
+								    <div ng-switch-when="4">
+								    	<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<span>({{definicion.valoraciones.length}})</span>
+								    </div>
+								    <div ng-switch-when="5">
+								    	<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<span>({{definicion.valoraciones.length}})</span>	
+								    </div>
+								</div>
+							</ion-item>
 						</div>
-					</ion-item>
-				</div>
-				<div ng-switch-default class="animate-switch">
-		  			<ion-item class="item item-body" ng-repeat="definicion in definiciones | orderBy:'denunciado'" ng-class="{{definicion.denunciado}} == true ? 'marcado': 'normal'" ng-if="definicion.denunciado == false" >		
-					
-						<div class="concepto_definicion">
-			  			 {{ $index+1 }}: {{ definicion.definicion }}
-			  			</div>
-			  			<div class="item-button-right">
-				  			<button class="icono_derecha button button-icon" ng-class="{{definicion.denunciado}} == true ? 'black': 'assertive'" ng-click="denunciarDefinicion(definicion.id, definicion.denunciado)">
-					      		<i class="icon ion-android-alert"></i>
-					    	</button>
-				    	</div>
+						<div ng-switch-default class="animate-switch">
+				  			<ion-item class="item item-body" ng-repeat="definicion in definiciones | orderBy:['denunciado','-media','-valoraciones.length']" ng-class="{{definicion.denunciado}} == true ? 'marcado': 'normal'" ng-if="definicion.denunciado == false" >		
+							
+								<div class="concepto_definicion">
+					  			 {{ $index+1 }}: {{ definicion.definicion }}
+					  			</div>
+					  			<div class="item-button-right">
+						  			<button class="icono_derecha button button-icon" ng-class="{{definicion.denunciado}} == true ? 'black': 'assertive'" ng-click="denunciarDefinicion(definicion.id, definicion.denunciado)">
+							      		<i class="icon ion-android-alert"></i>
+							    	</button>
+						    	</div>
 
-				    	<button class="button button-icon" ng-class="{{definicion.denunciado}} == true ? 'black': 'positive'" ng-click="valoracion(definicion.id, definicion.denunciado)">
-				      		<i class="icon ion-thumbsup"></i>
-				    	</button>
-				    	<br/>
+						    	<button class="button button-icon" ng-class="{{definicion.denunciado}} == true ? 'black': 'positive'" ng-click="valoracion(definicion.id, definicion.denunciado)">
+						      		<i class="icon ion-thumbsup"></i>
+						    	</button>
+						    	<br/>
 
-				    	<div ng-switch on="definicion.media">
-				    		<div ng-switch-when="0">
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<span>({{definicion.valoraciones.length}})</span>
-				    		</div>
-						    <div ng-switch-when="1">
-						    	<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<span>({{definicion.valoraciones.length}})</span>
-						    </div>
-						    <div ng-switch-when="2">
-						    	<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>	
-				    			<span>({{definicion.valoraciones.length}})</span>
-						    </div>
-						    <div ng-switch-when="3">
-						    	<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>	
-				    			<span>({{definicion.valoraciones.length}})</span>
-						    </div>
-						    <div ng-switch-when="4">
-						    	<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star-outline"></i>
-				    			<span>({{definicion.valoraciones.length}})</span>
-						    </div>
-						    <div ng-switch-when="5">
-						    	<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<i class="media icon ion-ios-star"></i>
-				    			<span>({{definicion.valoraciones.length}})</span>	
-						    </div>
+						    	<div ng-switch on="definicion.media">
+						    		<div ng-switch-when="0">
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<span>({{definicion.valoraciones.length}})</span>
+						    		</div>
+								    <div ng-switch-when="1">
+								    	<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<span>({{definicion.valoraciones.length}})</span>
+								    </div>
+								    <div ng-switch-when="2">
+								    	<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>	
+						    			<span>({{definicion.valoraciones.length}})</span>
+								    </div>
+								    <div ng-switch-when="3">
+								    	<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>	
+						    			<span>({{definicion.valoraciones.length}})</span>
+								    </div>
+								    <div ng-switch-when="4">
+								    	<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star-outline"></i>
+						    			<span>({{definicion.valoraciones.length}})</span>
+								    </div>
+								    <div ng-switch-when="5">
+								    	<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<i class="media icon ion-ios-star"></i>
+						    			<span>({{definicion.valoraciones.length}})</span>	
+								    </div>
+								</div>
+							</ion-item>
 						</div>
-					</ion-item>
-				</div>
+					</div>
+				</ion-list>
 			</div>
 
-		</ion-list>
+			<div ng-switch-when="false">
 
+				<div class="item item-body">
+					<p>No existen definiciones para este término. Si deseas crear una, sólo tienes que pulsar sobre el icono <i class="icon ion-ios-plus positive"></i> situado en la parte superior derecha de la pantalla.</p>
+		    	</div>
 
+			</div>
+
+		</div>
 	</ion-content>
 </ion-view>

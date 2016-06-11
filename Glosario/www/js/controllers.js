@@ -218,7 +218,14 @@ angular.module('starter.controllers', [])
 			$http.get("http://localhost:1337/termino/"+$scope.idTermino+"/definiciones")
 			.success(function(data){
 				$scope.definiciones = data;
-				console.log(data);
+				
+				if(data){
+					if($scope.definiciones!=0){
+						$scope.comprobar=true;
+					}else{
+						$scope.comprobar=false;
+					}
+				}	
 			})
 			.error(function(err){
 				console.log(err);
@@ -252,7 +259,7 @@ angular.module('starter.controllers', [])
 
 					var alertPopupPromise = $ionicPopup.alert({
 						title: '¡Correcto!',
-						template: 'Tu definicion se ha creado correctamente',
+						template: 'Tu definición se ha creado correctamente',
 						okText: 'Aceptar',
 						okType: 'button-positive'
 					});
@@ -541,7 +548,17 @@ angular.module('starter.controllers', [])
 
 			$http.get("http://localhost:1337/denunciadas/")
 			.success(function(data){
+
 				$scope.definicionesDenunciadas = data;
+
+				if(data){
+					if($scope.definicionesDenunciadas!=0){
+						$scope.comprobar=true;
+					}else{
+						$scope.comprobar=false;
+					}
+				}
+
 			})
 			.error(function(err){
 				console.log(err);

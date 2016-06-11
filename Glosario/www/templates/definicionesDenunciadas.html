@@ -3,34 +3,36 @@
 <ion-view id="definiciones" title="Definiciones Denunciadas">
  	
     <ion-content padding="true" class="fondo1 has-header" has-header="true">
-    	<br/>
-
+		<br/>
 		<ion-list option-buttons="itemButtons" can-swipe="true">
 
-			<label class="item item-divider"><b>Listado</b></label>
+  				<div ng-switch on="comprobar">
+	  				<div ng-switch-when="true">
+	  					<label class="item item-divider"><b>Listado</b></label>
+  						<ion-item class="item item-body" ng-repeat="definicion in definicionesDenunciadas">	
+		    			<div class="item-button-right">
 
-  			<ion-item class="item item-body" ng-repeat="definicion in definicionesDenunciadas">	
+			  				<b>{{definicion.termino.nombre| uppercase }}</b>
 
-	  			<div class="item-button-right">
+				  			<button class="icono_derecha button button-icon" ng-click="eliminarDefinicion(definicion.id)">
+					      		<i class="icon ion-close-circled assertive"></i>
+					    	</button>
+					    	<button class="icono_derecha2 button button-icon" ng-click="recuperarDefinicion(definicion.id)">
+					      		<i class="icon ion-checkmark-circled balanced"></i>
+					    	</button>
+				    	</div>
 
-	  				<b>{{definicion.termino.nombre| uppercase }}</b>
+					    <div class="defDenun concepto_definicion">
+				  			{{ definicion.definicion }}
+				  		</div>
+				  		</ion-item>
+					</div>
 
-		  			<button class="icono_derecha button button-icon" ng-click="eliminarDefinicion(definicion.id)">
-			      		<i class="icon ion-close-circled assertive"></i>
-			    	</button>
-			    	<button class="icono_derecha2 button button-icon" ng-click="recuperarDefinicion(definicion.id)">
-			      		<i class="icon ion-checkmark-circled balanced"></i>
-			    	</button>
-		    	</div>
+					<div ng-switch-when="false">
+					    <div class="item item-divider"><b>No hay definiciones denunciadas.</b></div>
+					</div>
+				</div>
 
-			    <div class="defDenun concepto_definicion">
-		  			{{ definicion.definicion }}
-		  		</div>
-
-			</ion-item>
-			
 		</ion-list>
-
-
 	</ion-content>
 </ion-view>
