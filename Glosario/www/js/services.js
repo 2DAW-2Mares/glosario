@@ -1,14 +1,12 @@
 angular.module('starter.services', [])
 .factory('listadoDeMaterias', function() {
-
-    return {datosGlobales: {} };
-    
+    return {datosGlobales: {} };  
 })
-
-
 .factory('terminoElegido', function() {
-
-    return {datosGlobales: {} };
-    
+    return {datosGlobales: {} }; 
 })
+.factory('grupoElegido', function() {
+  	return {datosGlobales: {} };
+})
+
 

@@ -1,0 +1,24 @@
+<!-- Pantalla Emergente Grupos -->
+
+<ion-modal-view>
+
+  <ion-header-bar class="bar bar-header bar-positive">
+    <h1 class="title">Grupos</h1>
+    <button class="button button-clear button-primary" ng-click="grupos.hide()">Cancel</button>
+  </ion-header-bar>
+
+  <ion-content class="padding">
+    <div class="list">
+
+      <div class="item item-divider"> 
+        Selecciona una materia :
+      </div>
+      
+      <ion-item ng-repeat="option in gruposExistentes" ng-click="buscarAlumnos(option)">
+        {{ option.ensenyanza }} ({{ option.curso }})
+      </ion-item>
+
+    </div>
+  </ion-content>
+
+</ion-modal-view>

@@ -449,7 +449,9 @@ angular.module('starter.controllers', [])
 						});
 
 						$scope.puntuacion.hide();
+						$ionicHistory.clearCache();
 						$scope.getDefiniciones();
+						$scope.setRating(0);
 						
 					})
 						.error(function(err,status,headers,config){
@@ -464,7 +466,7 @@ angular.module('starter.controllers', [])
 
   	})
 
-  	.controller('usuarioCtrl', function ($scope, $http, $ionicModal, $location, $ionicPopup, $ionicHistory, listadoDeMaterias) {
+  	.controller('usuarioCtrl', function ($scope, $http, $ionicModal, $location, $ionicPopup, $ionicHistory, listadoDeMaterias, grupoElegido) {
 
   		
   		/*-- Código para agregar término ($ionicModal) --*/
@@ -533,6 +535,44 @@ angular.module('starter.controllers', [])
 			}
 
 		};
+
+		/*-- Código para seleccionar un grupo --*/
+
+		$ionicModal.fromTemplateUrl('templates/grupos.html', {
+			scope: $scope
+		}).then(function(grupos) {
+			$scope.grupos = grupos;
+		});
+
+		$scope.gruposExistentes = [];
+
+		$scope.obtenerGrupo = function() {        
+			
+			$http.get("http://localhost:1337/grupo")
+			.success(function(data){
+				$scope.gruposExistentes = data;
+				console.log(data);
+			})
+			.error(function(err){
+				console.log(err);
+			});
+		}
+
+		$scope.obtenerGrupo();
+
+		$scope.buscarAlumnos = function(grupo){
+
+			grupoElegido.datosGlobales.idGrupo = grupo.id;
+			grupoElegido.datosGlobales.ensenyanza = grupo.ensenyanza;
+			grupoElegido.datosGlobales.curso = grupo.curso;
+
+
+			if (grupoElegido.datosGlobales.idGrupo!= null && grupoElegido.datosGlobales.ensenyanza!= null && grupoElegido.datosGlobales.curso!= null) {
+		      	
+				$location.path('/tab/listarAlumnos');
+				$scope.grupos.hide();
+		    }
+		}
 
   	})
 
@@ -642,15 +682,21 @@ angular.module('starter.controllers', [])
 
   	})	
 
-  	.controller('listarAlumnosCtrl', function($scope, $http, $ionicHistory,$ionicPopup) {
+  	.controller('listarAlumnosCtrl', function($scope, $http, grupoElegido) {
 
-  		/*-- Código para obtener las definiciones denunciadas --*/
+  		/*-- Código para  cargar alumnos de un grupo --*/
+
+  		$scope.idGrupo = grupoElegido.datosGlobales.idGrupo;
+  		$scope.ensenyanza = grupoElegido.datosGlobales.ensenyanza;
+  		$scope.curso = grupoElegido.datosGlobales.curso;
   		
 	    $scope.Alumnos =[];
 
-	    $scope.getAlumnos = function() {
+		$scope.getAlumnos = function(idGrupo) {
 
-			$http.get("http://localhost:1337/alumno")
+			$scope.alumnosEncontrados = [];
+
+			$http.get("http://localhost:1337/grupo/"+$scope.idGrupo+"/listarAlumnos")
 			.success(function(data){
 
 				$scope.Alumnos = data;
@@ -667,8 +713,9 @@ angular.module('starter.controllers', [])
 			.error(function(err){
 				console.log(err);
 			});
-		}
+		} 
 
 		$scope.getAlumnos();
+
 
 	})
