@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-	.controller('loginCtrl', function($scope, $ionicPopup, $auth, $location) {
+	.controller('loginCtrl', function($scope, $http, $auth, $ionicPopup, $location) {
 
 	    $scope.authenticate = function(provider) {
 	      $auth.authenticate(provider)
@@ -32,8 +32,6 @@ angular.module('starter.controllers', [])
 
   	.controller('consultarCtrl', function ($scope, $http, $ionicModal, $location, $ionicPopup, listadoDeMaterias) {
   	
-	
-
   		/*-- Seleccion de Opciones --*/
 
         $scope.selectables = [
@@ -644,3 +642,33 @@ angular.module('starter.controllers', [])
 
   	})	
 
+  	.controller('listarAlumnosCtrl', function($scope, $http, $ionicHistory,$ionicPopup) {
+
+  		/*-- Código para obtener las definiciones denunciadas --*/
+  		
+	    $scope.Alumnos =[];
+
+	    $scope.getAlumnos = function() {
+
+			$http.get("http://localhost:1337/alumno")
+			.success(function(data){
+
+				$scope.Alumnos = data;
+
+				if(data){
+					if($scope.Alumnos!=0){
+						$scope.comprobar=true;
+					}else{
+						$scope.comprobar=false;
+					}
+				}
+
+			})
+			.error(function(err){
+				console.log(err);
+			});
+		}
+
+		$scope.getAlumnos();
+
+	})

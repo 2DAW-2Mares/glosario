@@ -1,32 +1,52 @@
-<!-- Pantalla de login-->
+<!-- Pantalla de login -->
 
 <ion-view id="login" title="Login">
-
-    <ion-content class="fondo1 has-header padding">
+    <ion-content class="fondo1 has-header padding text-center">
      
-            <br/><br/><br/><br/>
-            <div style="width: 100%;text-align: center">
-                <div ng-if="!isAuthenticated()">
-                    <button ng-click="authenticate('google')" class="button button-block icon-left ion-social-googleplus">
-                      Sign in with Google
-                    </button>
-                </div>
+      <div>
+        <img class="logo centerme" ng-src="img/logotipo.png" class="fullscreen-image"/>
+      </div>
 
-                <div ng-if="isAuthenticated()">
-                  <div class="card">
-                    <div class="item item-text-wrap">
-                      You are currently logged in.
-                    </div>
-                  </div>
-                  <button ng-click="logout()" class="button button-block">
-                    Log Out
-                  </button>
-                </div>
+      <div id="markdown1" class="titulo1"><h1>Bienvenido a <b>Glosario</b></h1></div>
+     
+      <div style="width: 100%;text-align: center">
+          <div ng-if="!isAuthenticated()">
+              <button ng-click="authenticate('google')" class="button icon-left ion-social-googleplus">
+                Sign in with Google
+              </button>
+          </div>
 
-                <pre>
-                {{google_data|json}}
-                </pre>
+          <div ng-if="isAuthenticated()">
 
+            <div class="card">
+              <div class="item item-text-wrap">
+                You are currently logged in.
+              </div>
             </div>
-        </ion-content>
+
+            <button ng-click="logout()" class="button button-block">
+              Log Out
+            </button>
+          </div>
+
+          <pre>
+          {{google_data|json}}
+          </pre>
+
+      </div>
+<!--  
+      <br/>
+
+      <div style="width: 100%;text-align: center">
+        <button ng-click="login();" class="button">
+            Login Via Google
+        </button>                        
+        <br/>
+        <pre>
+        {{google_data|json}}
+        </pre>
+      </div>
+-->
+
+  </ion-content>
 </ion-view>

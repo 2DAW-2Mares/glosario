@@ -1,0 +1,28 @@
+<!-- Pantalla de listado de Alumnos -->
+
+<ion-view id="listarAlumnos" title="Listar Alumnos">
+ 	
+    <ion-content padding="true" class="fondo1 has-header" has-header="true">
+		<br/>
+		<ion-list option-buttons="itemButtons" can-swipe="true">
+
+  				<div ng-switch on="comprobar">
+	  				<div ng-switch-when="true">
+	  					<label class="item item-divider"><b>Listado</b></label>
+  						<ion-item class="item item-body" ng-repeat="alumno in Alumnos">	
+					    	
+						    <div>
+					  			{{ alumno.apellido1 }} {{ alumno.apellido2 }}, {{ alumno.nombre }} 
+					  		</div>
+					  		
+				  		</ion-item>
+					</div>
+
+					<div ng-switch-when="false">
+					    <div class="item item-divider"><b>No hay Alumnos.</b></div>
+					</div>
+				</div>
+
+		</ion-list>
+	</ion-content>
+</ion-view>

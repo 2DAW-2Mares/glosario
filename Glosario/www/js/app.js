@@ -5,6 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
+
 angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.controllers','starter.services'])
 
   .config(function($httpProvider, $stateProvider, $urlRouterProvider) {
@@ -109,6 +110,15 @@ angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.co
       }
     })
 
+    .state('tab.listarAlumnos', {
+      url: '/listarAlumnos',
+      views: {
+        'usuario': {
+          templateUrl: 'templates/listarAlumnos.html',
+          controller: 'listarAlumnosCtrl'
+        }
+      }
+    })
 
   $urlRouterProvider.otherwise('/tab/login');
 
@@ -116,33 +126,16 @@ angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.co
 
   .config(function($authProvider) {
 
-    /*
-    var commonConfig = {
-      popupOptions: {
-        location: 'no',
-        toolbar: 'yes',
-        width: window.screen.width,
-        height: window.screen.height
-      }
-    };
-
-    if (ionic.Platform.isIOS() || ionic.Platform.isAndroid()) {
-      commonConfig.redirectUri = 'http://localhost:8100';
-    }
-    
-    $authProvider.google(angular.extend({}, commonConfig, {
-      clientId: '310617402015-hp121f8gb6vvkfvc31ttesr481b2c0kc.apps.googleusercontent.com',
-      url: 'http://localhost:8100',
-    }));
-    */
-
+    $authProvider.tokenName = "token";
     $authProvider.authHeader = 'Authorization';
     $authProvider.authToken = 'Bearer';
-    $authProvider.loginUrl = "http://localhost:8100/#/login";
 
     $authProvider.oauth2({
       name: 'google',
       url: 'http://localhost:8100',
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+
       clientId: '310617402015-km1v4tpfanohdohd9a75cfb236757pac.apps.googleusercontent.com',
       redirectUri: 'http://localhost:8100',
       authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
@@ -156,8 +149,6 @@ angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.co
       popupOptions: { width: window.screen.width, height: window.screen.height },
       storageType: 'localStorage',
     });
-  
-
   })
 
   .run(function($ionicPlatform, $http) {
