@@ -30,7 +30,7 @@ angular.module('starter.controllers', [])
 	    };
   	})
 
-  	.controller('consultarCtrl', function ($scope, $http, $ionicModal, $location, $ionicPopup, listadoDeMaterias) {
+  	.controller('consultarCtrl', function ($scope, $http, $ionicModal, $location) {
   	
   		/*-- Seleccion de Opciones --*/
 
@@ -54,14 +54,29 @@ angular.module('starter.controllers', [])
 
      })
 
-  	.controller('ultimosCtrl', function($scope, $ionicModal, $http, $location, terminoElegido) {
+  	.controller('ultimosCtrl', function($scope, $http, $ionicModal, $location, $ionicLoading, $timeout, rutaProyecto, terminoElegido) {
+
+		$ionicLoading.show({
+			content: 'Loading',
+			animation: 'fade-in',
+			showBackdrop: true,
+			maxWidth: 200,
+			showDelay: 0
+		});
 
 	    $scope.listado =[];
 
-		$http.get("http://localhost:1337/ultimos")
+		$http.get(rutaProyecto+"/ultimos")
 		.success(function(data){
-			$scope.listado = data;
+
+			$timeout(function () {
+				$ionicLoading.hide();
+				$scope.listado = data;
+
+			}, 1000);
+
 			console.log(data);
+
 		})
 		.error(function(err){
 			console.log(err);
@@ -81,13 +96,26 @@ angular.module('starter.controllers', [])
 
 	})
 
-	.controller('materiaCtrl', function($scope, $ionicModal, $http, $location, listadoDeMaterias) {
+	.controller('materiaCtrl', function($scope, $http, $ionicModal, $location, $ionicLoading, $timeout, rutaProyecto, listadoDeMaterias) {
+
+		$ionicLoading.show({
+			content: 'Loading',
+			animation: 'fade-in',
+			showBackdrop: true,
+			maxWidth: 200,
+			showDelay: 0
+		});
 
 		$scope.materiasDisponibles = [];
 
-		$http.get("http://localhost:1337/materia")
+		$http.get(rutaProyecto+"/materia")
 		.success(function(data){
-			$scope.materiasDisponibles = data;
+
+			$timeout(function () {
+				$ionicLoading.hide();
+				$scope.materiasDisponibles = data;
+
+			}, 1000);
 			console.log(data);
 		})
 		.error(function(err){
@@ -110,8 +138,15 @@ angular.module('starter.controllers', [])
 
 	})
 
-  	.controller('terminosPorMateriaCtrl', function($scope, $ionicModal, $http, $location, listadoDeMaterias, terminoElegido) {
+  	.controller('terminosPorMateriaCtrl', function($scope, $http, $ionicModal, $location, $ionicLoading, $timeout, rutaProyecto, listadoDeMaterias, terminoElegido) {
 
+		$ionicLoading.show({
+			content: 'Loading',
+			animation: 'fade-in',
+			showBackdrop: true,
+			maxWidth: 200,
+			showDelay: 0
+		});
 
   		$scope.idMateria = listadoDeMaterias.datosGlobales.idMateria;
   		$scope.nombreMateria = listadoDeMaterias.datosGlobales.nombreMateria;
@@ -120,9 +155,14 @@ angular.module('starter.controllers', [])
   		
 	    $scope.terminosPorMateria =[];
 
-		$http.get("http://localhost:1337/materia/"+$scope.idMateria+"/ultimos")
+		$http.get(rutaProyecto+"/materia/"+$scope.idMateria+"/ultimos")
 		.success(function(data){
-			$scope.terminosPorMateria = data;
+
+			$timeout(function () {
+				$ionicLoading.hide();
+				$scope.terminosPorMateria = data;
+
+			}, 1000);
 			console.log(data);
 		})
 		.error(function(err){
@@ -142,19 +182,32 @@ angular.module('starter.controllers', [])
 
   	})
 
-  	.controller('busquedaDirectaCtrl', function($scope, $ionicModal, $http, $location, $ionicPopup,terminoElegido) {
+  	.controller('busquedaDirectaCtrl', function($scope, $http, $ionicModal, $location, $ionicLoading, $timeout, $ionicPopup, rutaProyecto, terminoElegido) {
+
 
 		$scope.busqueda = function(miBusqueda) {
-			console.log(miBusqueda);
+			
+			$ionicLoading.show({
+				content: 'Loading',
+				animation: 'fade-in',
+				showBackdrop: true,
+				maxWidth: 200,
+				showDelay: 0
+			});
+
 			if(miBusqueda){
 				$scope.valorIntroducido = miBusqueda;
 				$scope.listado = null;
 
-				$http.get("http://localhost:1337/search/"+$scope.valorIntroducido)
+				$http.get(rutaProyecto+"/search/"+$scope.valorIntroducido)
 				.success(function(data){
 					
 					if(data != ''){
-						$scope.listado = data;					
+						$timeout(function () {
+							$ionicLoading.hide();
+							$scope.listado = data;
+
+						}, 1000);				
 					}else{
 						var alertPopupPromise = $ionicPopup.alert({
 							title: 'Alerta',
@@ -194,7 +247,15 @@ angular.module('starter.controllers', [])
 
 	})
 
-  	.controller('definicionesCtrl', function($scope, $ionicModal, $http, $ionicHistory, $ionicPopup, terminoElegido) {
+  	.controller('definicionesCtrl', function($scope, $http, $ionicModal, $ionicHistory, $ionicPopup, $ionicLoading, $timeout, rutaProyecto, terminoElegido) {
+
+  		$ionicLoading.show({
+			content: 'Loading',
+			animation: 'fade-in',
+			showBackdrop: true,
+			maxWidth: 200,
+			showDelay: 0
+		});
 
   		/*-- Código para agregar definición ($ionicModal) --*/
 
@@ -213,17 +274,24 @@ angular.module('starter.controllers', [])
 
 	    $scope.getDefiniciones = function() {
 
-			$http.get("http://localhost:1337/termino/"+$scope.idTermino+"/definiciones")
+			$http.get(rutaProyecto+"/termino/"+$scope.idTermino+"/definiciones")
 			.success(function(data){
-				$scope.definiciones = data;
-				
-				if(data){
-					if($scope.definiciones!=0){
-						$scope.comprobar=true;
-					}else{
-						$scope.comprobar=false;
+
+				$timeout(function () {
+					$ionicLoading.hide();
+
+					$scope.definiciones = data;
+
+					if(data){
+						if($scope.definiciones!=0){
+							$scope.comprobar=true;
+						}else{
+							$scope.comprobar=false;
+						}
 					}
-				}	
+
+				}, 1000);
+		
 			})
 			.error(function(err){
 				console.log(err);
@@ -239,8 +307,13 @@ angular.module('starter.controllers', [])
 
 		$scope.crearDefinicion = function(nuevaDefinicion) {        
 		
-			console.log(nuevaDefinicion);
-
+			$ionicLoading.show({
+				content: 'Loading',
+				animation: 'fade-in',
+				showBackdrop: true,
+				maxWidth: 200,
+				showDelay: 0
+			});
 
 			if($scope.nuevaDefinicion.definicion!=''){
 
@@ -249,22 +322,28 @@ angular.module('starter.controllers', [])
 				console.log($scope.nuevaDef);
 
 
-			    $http.post("http://localhost:1337/termino/"+$scope.idTermino+"/agregar",{
+			    $http.post(rutaProyecto+"/termino/"+$scope.idTermino+"/agregar",{
 					definicion: $scope.nuevaDef
 					})
 					.success(function(data,status,headers,config){
-					console.log(data);
+					
+						$timeout(function () {
+							$ionicLoading.hide();
 
-					var alertPopupPromise = $ionicPopup.alert({
-						title: '¡Correcto!',
-						template: 'Tu definición se ha creado correctamente',
-						okText: 'Aceptar',
-						okType: 'button-positive'
-					});
+							var alertPopupPromise = $ionicPopup.alert({
+								title: '¡Correcto!',
+								template: 'Tu definición se ha creado correctamente',
+								okText: 'Aceptar',
+								okType: 'button-positive'
+							});
 
-					$scope.nuevaDefinicion.definicion='';
-				    $scope.modal.hide();
-					$scope.getDefiniciones();
+							$scope.nuevaDefinicion.definicion='';
+						    $scope.modal.hide();
+							$scope.getDefiniciones();
+
+						}, 1000);
+						console.log(data);
+
 				})
 					.error(function(err,status,headers,config){
 					console.log(err);
@@ -284,6 +363,14 @@ angular.module('starter.controllers', [])
 		/*-- Código para denunciar una definición --*/
 
 		$scope.denunciarDefinicion = function(idDefinicion, denunciaDefinicion) {
+
+			$ionicLoading.show({
+				content: 'Loading',
+				animation: 'fade-in',
+				showBackdrop: true,
+				maxWidth: 200,
+				showDelay: 0
+			});
 	
 			if(denunciaDefinicion == false){
 
@@ -294,20 +381,26 @@ angular.module('starter.controllers', [])
 				confirmPopup.then(function(res) {
 					if(res) {
 
-						$http.put("http://localhost:1337/definicion/"+idDefinicion+"/denunciar")
+						$http.put(rutaProyecto+"/definicion/"+idDefinicion+"/denunciar")
 						.success(function(data,status,headers,config){
+
+
+							$timeout(function () {
+								$ionicLoading.hide();
+
+								var alertPopupPromise = $ionicPopup.alert({
+									title: '¡Definición Denunciada!',
+									template: 'Hemos recibido tu denuncia satisfactoriamente. Pronto un profesor se encargará de evaluar el contenido de esta definición.',
+									okText: 'Aceptar',
+									okType: 'button-positive'
+								});
+
+								$scope.getDefiniciones();
+								$ionicHistory.clearCache();
+
+							}, 1000);
 							console.log(data);
 
-							var alertPopupPromise = $ionicPopup.alert({
-								title: '¡Definición Denunciada!',
-								template: 'Hemos recibido tu denuncia satisfactoriamente. Pronto un profesor se encargará de evaluar el contenido de esta definición.',
-								okText: 'Aceptar',
-								okType: 'button-positive'
-							});
-
-							$scope.getDefiniciones();
-							$ionicHistory.clearCache();
-							
 						})
 							.error(function(err,status,headers,config){
 							console.log(err);
@@ -435,24 +528,37 @@ angular.module('starter.controllers', [])
 			confirmPopup.then(function(res) {
 				if(res) {
 
-					$http.post("http://localhost:1337/definicion/"+$scope.idSeleccionadaLista+"/valorar",{
+					$ionicLoading.show({
+						content: 'Loading',
+						animation: 'fade-in',
+						showBackdrop: true,
+						maxWidth: 200,
+						showDelay: 0
+					});
+
+					$http.post(rutaProyecto+"/definicion/"+$scope.idSeleccionadaLista+"/valorar",{
 					valoracion: $scope.valoracionConsedida
 					})
 					.success(function(data,status,headers,config){
+
+						$timeout(function () {
+							$ionicLoading.hide();
+
+							var alertPopupPromise = $ionicPopup.alert({
+								title: '¡Definición Valorada!',
+								template: 'Hemos recibido tu valoración satisfactoriamente.',
+								okText: 'Aceptar',
+								okType: 'button-positive'
+							});
+
+							$scope.puntuacion.hide();
+							$ionicHistory.clearCache();
+							$scope.getDefiniciones();
+							$scope.setRating(0);
+
+						}, 1000);
 						console.log(data);
 
-						var alertPopupPromise = $ionicPopup.alert({
-							title: '¡Definición Valorada!',
-							template: 'Hemos recibido tu valoración satisfactoriamente.',
-							okText: 'Aceptar',
-							okType: 'button-positive'
-						});
-
-						$scope.puntuacion.hide();
-						$ionicHistory.clearCache();
-						$scope.getDefiniciones();
-						$scope.setRating(0);
-						
 					})
 						.error(function(err,status,headers,config){
 						console.log(err);
@@ -466,7 +572,7 @@ angular.module('starter.controllers', [])
 
   	})
 
-  	.controller('usuarioCtrl', function ($scope, $http, $ionicModal, $location, $ionicPopup, $ionicHistory, listadoDeMaterias, grupoElegido) {
+  	.controller('usuarioCtrl', function ($scope, $http, $ionicModal, $location, $ionicPopup, $ionicHistory, $ionicLoading, $timeout, rutaProyecto, grupoElegido) {
 
   		
   		/*-- Código para agregar término ($ionicModal) --*/
@@ -481,8 +587,8 @@ angular.module('starter.controllers', [])
 
 		$scope.materiasDisponibles = [];
 
-		/*-- Es necesario cargar la lista de materias para asignar una al nuevo término --*/
-		$http.get("http://localhost:1337/materia")
+		/*-- Código para crear materias disponibles --*/
+		$http.get(rutaProyecto+"/materia")
 		.success(function(data){
 			$scope.materiasDisponibles = data;
 			console.log(data);
@@ -504,26 +610,41 @@ angular.module('starter.controllers', [])
 				$scope.nuevoNombre= nuevoTermino.nombre;
 				$scope.nuevoId= nuevoTermino.id;
 
-			    $http.post("http://localhost:1337/termino",{
+				$ionicLoading.show({
+					content: 'Loading',
+					animation: 'fade-in',
+					showBackdrop: true,
+					maxWidth: 200,
+					showDelay: 0
+				});
+
+			    $http.post(rutaProyecto+"/termino",{
 					nombre: $scope.nuevoNombre,
 					materia: $scope.nuevoId
 					})
-					.success(function(data,status,headers,config){
+				.success(function(data,status,headers,config){
+
+					$timeout(function () {
+						$ionicLoading.hide();
+
+						var alertPopupPromise = $ionicPopup.alert({
+							title: '¡Correcto!',
+							template: 'Tu termino se ha creado correctamente',
+							okText: 'Aceptar',
+							okType: 'button-positive'
+						});
+
+						$scope.nuevoTermino.nombre='';
+						$scope.nuevoTermino.id='';
+					    $scope.modal.hide();
+					    $ionicHistory.clearCache();
+
+					}, 1000);
 					console.log(data);
 				})
 					.error(function(err,status,headers,config){
 					console.log(err);
 				});
-
-				var alertPopupPromise = $ionicPopup.alert({
-					title: '¡Correcto!',
-					template: 'Tu termino se ha creado correctamente',
-					okText: 'Aceptar',
-					okType: 'button-positive'
-				});
-
-			    $scope.modal.hide();
-			    $ionicHistory.clearCache();
 
 			}else{
 				var alertPopupPromise = $ionicPopup.alert({
@@ -546,12 +667,14 @@ angular.module('starter.controllers', [])
 
 		$scope.gruposExistentes = [];
 
-		$scope.obtenerGrupo = function() {        
-			
-			$http.get("http://localhost:1337/grupo")
+		$scope.obtenerGrupo = function() {
+
+			$http.get(rutaProyecto+"/grupo")
 			.success(function(data){
+
 				$scope.gruposExistentes = data;
 				console.log(data);
+				
 			})
 			.error(function(err){
 				console.log(err);
@@ -576,7 +699,7 @@ angular.module('starter.controllers', [])
 
   	})
 
-  	.controller('definicionesDenunciadasCtrl', function($scope, $http, $ionicHistory,$ionicPopup) {
+  	.controller('definicionesDenunciadasCtrl', function($scope, $http, $ionicHistory, $ionicPopup, $ionicLoading, $timeout, rutaProyecto) {
 
   		/*-- Código para obtener las definiciones denunciadas --*/
   		
@@ -584,18 +707,31 @@ angular.module('starter.controllers', [])
 
 	    $scope.getDefinicionesDenunciadas = function() {
 
-			$http.get("http://localhost:1337/denunciadas/")
+	    	$ionicLoading.show({
+				content: 'Loading',
+				animation: 'fade-in',
+				showBackdrop: true,
+				maxWidth: 200,
+				showDelay: 0
+			});
+
+			$http.get(rutaProyecto+"/denunciadas/")
 			.success(function(data){
 
-				$scope.definicionesDenunciadas = data;
+				$timeout(function () {
+					$ionicLoading.hide();
+					$scope.definicionesDenunciadas = data;
 
-				if(data){
-					if($scope.definicionesDenunciadas!=0){
-						$scope.comprobar=true;
-					}else{
-						$scope.comprobar=false;
+					if(data){
+						if($scope.definicionesDenunciadas!=0){
+							$scope.comprobar=true;
+						}else{
+							$scope.comprobar=false;
+						}
 					}
-				}
+
+				}, 1000);
+				console.log(data);
 
 			})
 			.error(function(err){
@@ -608,7 +744,7 @@ angular.module('starter.controllers', [])
 		/*-- Código para reestablecer la definición denunciada --*/
 
 		$scope.recuperarDefinicion = function(idDefinicion) {
-	
+
 			var confirmPopup = $ionicPopup.confirm({
 			title: 'Reestablecer Definición',
 			template: '¿Estás seguro que deseas reestablecer esta definición?'
@@ -616,21 +752,33 @@ angular.module('starter.controllers', [])
 			confirmPopup.then(function(res) {
 				if(res) {
 
-					$http.put("http://localhost:1337/definicion/"+idDefinicion,{
+					$ionicLoading.show({
+						content: 'Loading',
+						animation: 'fade-in',
+						showBackdrop: true,
+						maxWidth: 200,
+						showDelay: 0
+					});
+
+					$http.put(rutaProyecto+"/definicion/"+idDefinicion,{
 					denunciado: false,
 					})
 					.success(function(data,status,headers,config){
-						console.log(data);
 
-						var alertPopupPromise = $ionicPopup.alert({
+						$timeout(function () {
+							$ionicLoading.hide();
+							var alertPopupPromise = $ionicPopup.alert({
 							title: '¡Definición Reestablecida!',
 							template: 'La definición se ha reestablecido correctamente.',
 							okText: 'Aceptar',
 							okType: 'button-positive'
-						});
+							});
 
-						$scope.getDefinicionesDenunciadas();
-						$ionicHistory.clearCache();
+							$scope.getDefinicionesDenunciadas();
+							$ionicHistory.clearCache();
+							console.log(data);
+
+						}, 1000);
 						
 					})
 						.error(function(err,status,headers,config){
@@ -654,19 +802,31 @@ angular.module('starter.controllers', [])
 			confirmPopup.then(function(res) {
 				if(res) {
 
-					$http.delete("http://localhost:1337/definicion/"+idDefinicion)
+					$ionicLoading.show({
+						content: 'Loading',
+						animation: 'fade-in',
+						showBackdrop: true,
+						maxWidth: 200,
+						showDelay: 0
+					});
+
+					$http.delete(rutaProyecto+"/definicion/"+idDefinicion)
 					.success(function(data,status,headers,config){
-						console.log(data);
 
-						var alertPopupPromise = $ionicPopup.alert({
-							title: '¡Definición Eliminada!',
-							template: 'La definición se ha eliminado correctamente.',
-							okText: 'Aceptar',
-							okType: 'button-positive'
-						});
+						$timeout(function () {
+							$ionicLoading.hide();
+							var alertPopupPromise = $ionicPopup.alert({
+								title: '¡Definición Eliminada!',
+								template: 'La definición se ha eliminado correctamente.',
+								okText: 'Aceptar',
+								okType: 'button-positive'
+							});
 
-						$scope.getDefinicionesDenunciadas();
-						$ionicHistory.clearCache();
+							$scope.getDefinicionesDenunciadas();
+							$ionicHistory.clearCache();
+							console.log(data);
+
+						}, 1000);
 						
 					})
 						.error(function(err,status,headers,config){
@@ -682,7 +842,7 @@ angular.module('starter.controllers', [])
 
   	})	
 
-  	.controller('listarAlumnosCtrl', function($scope, $http, grupoElegido) {
+  	.controller('listarAlumnosCtrl', function($scope, $http, $ionicLoading, $timeout, grupoElegido, rutaProyecto) {
 
   		/*-- Código para  cargar alumnos de un grupo --*/
 
@@ -694,20 +854,33 @@ angular.module('starter.controllers', [])
 
 		$scope.getAlumnos = function(idGrupo) {
 
+			$ionicLoading.show({
+				content: 'Loading',
+				animation: 'fade-in',
+				showBackdrop: true,
+				maxWidth: 200,
+				showDelay: 0
+			});
+
 			$scope.alumnosEncontrados = [];
 
-			$http.get("http://localhost:1337/grupo/"+$scope.idGrupo+"/listarAlumnos")
+			$http.get(rutaProyecto+"/grupo/"+$scope.idGrupo+"/listarAlumnos")
 			.success(function(data){
 
-				$scope.Alumnos = data;
+				$timeout(function () {
+					$ionicLoading.hide();
+					$scope.Alumnos = data;
 
-				if(data){
-					if($scope.Alumnos!=0){
-						$scope.comprobar=true;
-					}else{
-						$scope.comprobar=false;
+					if(data){
+						if($scope.Alumnos!=0){
+							$scope.comprobar=true;
+						}else{
+							$scope.comprobar=false;
+						}
 					}
-				}
+					console.log(data);
+
+				}, 1000);
 
 			})
 			.error(function(err){
@@ -719,3 +892,5 @@ angular.module('starter.controllers', [])
 
 
 	})
+
+

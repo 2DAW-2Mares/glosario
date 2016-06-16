@@ -120,7 +120,7 @@ angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.co
       }
     })
 
-  $urlRouterProvider.otherwise('/tab/login');
+  $urlRouterProvider.otherwise('/tab/consultar');
 
   })
 
