@@ -364,14 +364,6 @@ angular.module('starter.controllers', [])
 
 		$scope.denunciarDefinicion = function(idDefinicion, denunciaDefinicion) {
 
-			$ionicLoading.show({
-				content: 'Loading',
-				animation: 'fade-in',
-				showBackdrop: true,
-				maxWidth: 200,
-				showDelay: 0
-			});
-	
 			if(denunciaDefinicion == false){
 
 				var confirmPopup = $ionicPopup.confirm({
@@ -380,6 +372,14 @@ angular.module('starter.controllers', [])
 				});
 				confirmPopup.then(function(res) {
 					if(res) {
+						
+						$ionicLoading.show({
+							content: 'Loading',
+							animation: 'fade-in',
+							showBackdrop: true,
+							maxWidth: 200,
+							showDelay: 0
+						});
 
 						$http.put(rutaProyecto+"/definicion/"+idDefinicion+"/denunciar")
 						.success(function(data,status,headers,config){
