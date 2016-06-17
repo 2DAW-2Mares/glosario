@@ -10,7 +10,7 @@ angular.module('starter.controllers', [])
 	            content: 'You have successfully logged in!'
 	          })
 
-	          $location.path('/tab/consultar');
+	          $location.path('/tab/inicio');
 	        })
 	        .catch(function(response) {
 	          $ionicPopup.alert({
@@ -30,7 +30,7 @@ angular.module('starter.controllers', [])
 	    };
   	})
 
-  	.controller('consultarCtrl', function ($scope, $http, $ionicModal, $location) {
+  	.controller('inicioCtrl', function ($scope, $http, $ionicModal, $location) {
   	
   		/*-- Seleccion de Opciones --*/
 
@@ -54,6 +54,107 @@ angular.module('starter.controllers', [])
 
      })
 
+
+  	.controller('playCtrl', function ($scope, $http, $ionicModal, $ionicLoading, $timeout, $ionicPopup, rutaProyecto ) {
+		
+  		/* Código Jugar */
+
+		$scope.getPlay = function(){
+
+	  		$ionicLoading.show({
+				content: 'Loading',
+				animation: 'fade-in',
+				showBackdrop: true,
+				maxWidth: 200,
+				showDelay: 0
+			});
+
+		    $scope.adivinaTermino =[];
+
+			//$http.get("http://localhost:1337/play")
+			$http.get(rutaProyecto+"/play")
+			.success(function(data){
+
+				$timeout(function () {
+					$ionicLoading.hide();
+					$scope.adivinaTermino = data;
+					console.log(data);
+				}, 1000);
+
+			})
+			.error(function(err){
+				console.log(err);
+			});
+		}
+
+		$scope.getPlay();
+
+  		/* Enviando respuesta */
+
+	
+		$scope.comprobar = function(respuestaEnviada, idTermino){
+
+			if(respuestaEnviada!=null){
+
+				$ionicLoading.show({
+					content: 'Loading',
+					animation: 'fade-in',
+					showBackdrop: true,
+					maxWidth: 200,
+					showDelay: 0
+				});
+
+			    $http.post(rutaProyecto+"/play",{
+					nombre: respuestaEnviada,
+					id: idTermino,
+					})
+					.success(function(data,status,headers,config){
+					
+						$timeout(function () {
+							$ionicLoading.hide();
+							console.log(data);
+							if(data == true){
+
+								var confirmPopup = $ionicPopup.confirm({
+								title: 'Has acertado',
+								template: '¿Estás seguro que deseas denunciar esta definición?'
+								});
+								confirmPopup.then(function(res) {
+									if(res) {
+										
+										$scope.miRespuesta="";
+										$scope.getPlay();
+									 
+									} else {
+									 console.log('Has cambiado de opinión');
+									}
+								});
+
+							}else{
+
+							}
+
+						}, 1000);
+						console.log(data);
+
+				})
+					.error(function(err,status,headers,config){
+					console.log(err);
+				});
+
+			}else{
+				var alertPopupPromise = $ionicPopup.alert({
+					title: 'Alerta',
+					template: 'Es necesario escribir una definición',
+					okText: 'Cerrar',
+					okType: 'button-dark'
+				});
+			}
+		}
+
+
+     })
+
   	.controller('ultimosCtrl', function($scope, $http, $ionicModal, $location, $ionicLoading, $timeout, rutaProyecto, terminoElegido) {
 
 		$ionicLoading.show({
@@ -72,10 +173,9 @@ angular.module('starter.controllers', [])
 			$timeout(function () {
 				$ionicLoading.hide();
 				$scope.listado = data;
+				console.log(data);
 
 			}, 1000);
-
-			console.log(data);
 
 		})
 		.error(function(err){

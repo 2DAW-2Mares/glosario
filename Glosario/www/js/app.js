@@ -30,12 +30,12 @@ angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.co
       }
     })
 
-    .state('tab.consultar', {
-      url: '/consultar',
+    .state('tab.inicio', {
+      url: '/inicio',
       views: {
-        'consultar': {
-          templateUrl: 'templates/consultar.html',
-          controller: 'consultarCtrl'
+        'inicio': {
+          templateUrl: 'templates/inicio.html',
+          controller: 'inicioCtrl'
         }
       }
     })
@@ -43,7 +43,7 @@ angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.co
     .state('tab.ultimos', {
       url: '/ultimos',
       views: {
-        'consultar': {
+        'inicio': {
           templateUrl: 'templates/ultimos.html',
           controller: 'ultimosCtrl'
         }
@@ -53,7 +53,7 @@ angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.co
     .state('tab.materia', {
       url: '/materia',
       views: {
-        'consultar': {
+        'inicio': {
           templateUrl: 'templates/materia.html',
           controller: 'materiaCtrl'
         }
@@ -63,7 +63,7 @@ angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.co
     .state('tab.busquedaDirecta', {
       url: '/busquedaDirecta',
       views: {
-        'consultar': {
+        'inicio': {
           templateUrl: 'templates/busquedaDirecta.html',
           controller: 'busquedaDirectaCtrl'
         }
@@ -73,9 +73,19 @@ angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.co
     .state('tab.terminosPorMateria', {
       url: '/terminosPorMateria',
       views: {
-        'consultar': {
+        'inicio': {
           templateUrl: 'templates/terminosPorMateria.html',
           controller: 'terminosPorMateriaCtrl'
+        }
+      }
+    })
+
+    .state('tab.play', {
+      url: '/play',
+      views: {
+        'inicio': {
+          templateUrl: 'templates/jugar.html',
+          controller: 'playCtrl'
         }
       }
     })
@@ -83,7 +93,7 @@ angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.co
     .state('tab.definiciones', {
       url: '/definiciones',
       views: {
-        'consultar': {
+        'inicio': {
           templateUrl: 'templates/definiciones.html',
           controller: 'definicionesCtrl'
         }
@@ -120,7 +130,7 @@ angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.co
       }
     })
 
-  $urlRouterProvider.otherwise('/tab/consultar');
+  $urlRouterProvider.otherwise('/tab/inicio');
 
   })
 

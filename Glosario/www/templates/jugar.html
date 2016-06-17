@@ -1,0 +1,33 @@
+<!-- Pantalla de consultar -->
+
+<ion-view id="play" title="Jugar">
+
+  <ion-content class="fondo1 has-header padding text-center">
+
+      <div id="markdown1" class="titulo1"><h1>Adivina el Término</h1></div>
+
+      <div class="padding">
+
+        <label class="item item-divider"><b>Definición:</b></label>
+        <ion-item class="item item-body" ng-model="adivinaTermino">
+          {{adivinaTermino.definicion}}
+        </ion-item>
+      </div>
+
+      <div class="padding text-center">
+
+        <label class="item item-input">
+          <input type="text" placeholder="Escribe el término" class="text-center" style="font-size:1.5em;" ng-model="miRespuesta">
+        </label>
+        <br/>
+        <div>
+          <button class="button button-light" ng-model="miRespuesta" ng-click="comprobar(miRespuesta, adivinaTermino.termino)">
+            ¡Probar Suerte!
+          </button>
+        </div>
+
+      </div>
+
+    </ion-content>
+
+</ion-view>
