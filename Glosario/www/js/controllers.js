@@ -1,7 +1,18 @@
 angular.module('starter.controllers', [])
 
-	.controller('loginCtrl', function($scope, $http, $auth, $ionicPopup, $location) {
+	.controller('loginCtrl', function($scope, googleLogin) {
 
+        $scope.google_data = {};
+        $scope.login = function () {
+            var promise = googleLogin.startLogin();
+            promise.then(function (data) {
+                $scope.google_data = data;
+            }, function (data) {
+                $scope.google_data = data;
+            });
+        }
+
+		/*
 	    $scope.authenticate = function(provider) {
 	      $auth.authenticate(provider)
 	        .then(function() {
@@ -28,6 +39,7 @@ angular.module('starter.controllers', [])
 	    $scope.isAuthenticated = function() {
 	      return $auth.isAuthenticated();
 	    };
+	    */
   	})
 
   	.controller('inicioCtrl', function ($scope, $http, $ionicModal, $location) {
@@ -91,10 +103,12 @@ angular.module('starter.controllers', [])
 
   		/* Enviando respuesta */
 
-	
+  		$scope.miRespuesta=[];
+		$scope.miRespuesta.input='';
+
 		$scope.comprobar = function(respuestaEnviada, idTermino){
 
-			if(respuestaEnviada!=null){
+			if(respuestaEnviada.input!=null){
 
 				$ionicLoading.show({
 					content: 'Loading',
@@ -105,32 +119,40 @@ angular.module('starter.controllers', [])
 				});
 
 			    $http.post(rutaProyecto+"/play",{
-					nombre: respuestaEnviada,
+					nombre: respuestaEnviada.input,
 					id: idTermino,
 					})
 					.success(function(data,status,headers,config){
 					
 						$timeout(function () {
 							$ionicLoading.hide();
+							$scope.miRespuesta.input='';
 							console.log(data);
 							if(data == true){
 
-								var confirmPopup = $ionicPopup.confirm({
-								title: 'Has acertado',
-								template: '¿Estás seguro que deseas denunciar esta definición?'
+								var alertPopup = $ionicPopup.alert({
+									title: '¡Correcto!',
+									template: 'Enhorabuena, tu respuesta es correcta, pulsa "siguiente" para continuar.',
+									okText: 'Siguiente',
+									okType: 'button-positive'
 								});
-								confirmPopup.then(function(res) {
-									if(res) {
-										
-										$scope.miRespuesta="";
-										$scope.getPlay();
-									 
-									} else {
-									 console.log('Has cambiado de opinión');
-									}
+			
+								$scope.getPlay();
+			
+							}else{
+
+								var confirmPopup = $ionicPopup.confirm({
+									title: '¡Incorrecto!',
+									template: 'Tu respuesta no es correcta, pulsa "reintentar" para probar suerte con un nuevo término.',
+									okText: 'Reintentar',
+									okType: 'button-dark'
 								});
 
-							}else{
+								confirmPopup.then(function(res) {
+									if(res) {
+										$scope.getPlay();
+									}
+								});
 
 							}
 
@@ -145,7 +167,7 @@ angular.module('starter.controllers', [])
 			}else{
 				var alertPopupPromise = $ionicPopup.alert({
 					title: 'Alerta',
-					template: 'Es necesario escribir una definición',
+					template: 'Es necesario escribir un término',
 					okText: 'Cerrar',
 					okType: 'button-dark'
 				});
@@ -179,7 +201,12 @@ angular.module('starter.controllers', [])
 
 		})
 		.error(function(err){
-			console.log(err);
+	
+			$timeout(function () {
+				$ionicLoading.hide();
+				console.log(err);
+			}, 1000);
+
 		});
 
 		$scope.select_item = function(termino){
@@ -219,7 +246,10 @@ angular.module('starter.controllers', [])
 			console.log(data);
 		})
 		.error(function(err){
-			console.log(err);
+			$timeout(function () {
+				$ionicLoading.hide();
+				console.log(err);
+			}, 1000);
 		});
 		
 		$scope.miSeleccionMaterias = function(materia){
@@ -261,12 +291,16 @@ angular.module('starter.controllers', [])
 			$timeout(function () {
 				$ionicLoading.hide();
 				$scope.terminosPorMateria = data;
+				console.log(data);
 
 			}, 1000);
-			console.log(data);
+			
 		})
 		.error(function(err){
-			console.log(err);
+			$timeout(function () {
+				$ionicLoading.hide();
+				console.log(err);
+			}, 1000);
 		});
 
 		$scope.select_item = function(termino){
@@ -284,22 +318,24 @@ angular.module('starter.controllers', [])
 
   	.controller('busquedaDirectaCtrl', function($scope, $http, $ionicModal, $location, $ionicLoading, $timeout, $ionicPopup, rutaProyecto, terminoElegido) {
 
+  		$scope.miBusqueda=[];
+		$scope.miBusqueda.input='';
 
 		$scope.busqueda = function(miBusqueda) {
 			
-			$ionicLoading.show({
-				content: 'Loading',
-				animation: 'fade-in',
-				showBackdrop: true,
-				maxWidth: 200,
-				showDelay: 0
-			});
+			if(miBusqueda.input != ''){
 
-			if(miBusqueda){
-				$scope.valorIntroducido = miBusqueda;
+				$ionicLoading.show({
+					content: 'Loading',
+					animation: 'fade-in',
+					showBackdrop: true,
+					maxWidth: 200,
+					showDelay: 0
+				});
+
 				$scope.listado = null;
 
-				$http.get(rutaProyecto+"/search/"+$scope.valorIntroducido)
+				$http.get(rutaProyecto+"/search/"+$scope.miBusqueda.input)
 				.success(function(data){
 					
 					if(data != ''){
@@ -309,16 +345,26 @@ angular.module('starter.controllers', [])
 
 						}, 1000);				
 					}else{
-						var alertPopupPromise = $ionicPopup.alert({
-							title: 'Alerta',
-							template: 'No se encontraron coincidencias',
-							okText: 'Cerrar',
-							okType: 'button-dark'
-						});
+
+						$timeout(function () {
+							$ionicLoading.hide();
+							var alertPopupPromise = $ionicPopup.alert({
+								title: 'Alerta',
+								template: 'No se encontraron coincidencias',
+								okText: 'Cerrar',
+								okType: 'button-dark'
+							});
+							$scope.miBusqueda.input='';
+
+						}, 1000);	
+						
 					}	
 				})
 				.error(function(err){
-					console.log(err);
+					$timeout(function () {
+						$ionicLoading.hide();
+						console.log(err);
+					}, 1000);
 				});
 			}else{
 
@@ -328,6 +374,7 @@ angular.module('starter.controllers', [])
 					okText: 'Cerrar',
 					okType: 'button-assertive'
 				});
+
 			}
 
 		}
@@ -349,14 +396,7 @@ angular.module('starter.controllers', [])
 
   	.controller('definicionesCtrl', function($scope, $http, $ionicModal, $ionicHistory, $ionicPopup, $ionicLoading, $timeout, rutaProyecto, terminoElegido) {
 
-  		$ionicLoading.show({
-			content: 'Loading',
-			animation: 'fade-in',
-			showBackdrop: true,
-			maxWidth: 200,
-			showDelay: 0
-		});
-
+  		
   		/*-- Código para agregar definición ($ionicModal) --*/
 
   		$ionicModal.fromTemplateUrl('templates/agregarDefinicion.html', {
@@ -373,6 +413,14 @@ angular.module('starter.controllers', [])
 	    $scope.definiciones =[];
 
 	    $scope.getDefiniciones = function() {
+
+	    	$ionicLoading.show({
+				content: 'Loading',
+				animation: 'fade-in',
+				showBackdrop: true,
+				maxWidth: 200,
+				showDelay: 0
+			});
 
 			$http.get(rutaProyecto+"/termino/"+$scope.idTermino+"/definiciones")
 			.success(function(data){
@@ -394,7 +442,10 @@ angular.module('starter.controllers', [])
 		
 			})
 			.error(function(err){
-				console.log(err);
+				$timeout(function () {
+					$ionicLoading.hide();
+					console.log(err);
+				}, 1000);
 			});
 		}
 
@@ -405,17 +456,17 @@ angular.module('starter.controllers', [])
 		$scope.nuevaDefinicion=[];
 		$scope.nuevaDefinicion.definicion='';
 
-		$scope.crearDefinicion = function(nuevaDefinicion) {        
+		$scope.crearDefinicion = function(nuevaDefinicion) { 
 		
-			$ionicLoading.show({
-				content: 'Loading',
-				animation: 'fade-in',
-				showBackdrop: true,
-				maxWidth: 200,
-				showDelay: 0
-			});
-
 			if($scope.nuevaDefinicion.definicion!=''){
+
+				$ionicLoading.show({
+					content: 'Loading',
+					animation: 'fade-in',
+					showBackdrop: true,
+					maxWidth: 200,
+					showDelay: 0
+				});
 
 				$scope.nuevaDef= nuevaDefinicion.definicion;
 
@@ -444,9 +495,13 @@ angular.module('starter.controllers', [])
 						}, 1000);
 						console.log(data);
 
-				})
+					})
 					.error(function(err,status,headers,config){
-					console.log(err);
+						$timeout(function () {
+							$ionicLoading.hide();
+							console.log(err);
+						}, 1000);
+
 				});
 
 			}else{
@@ -503,7 +558,11 @@ angular.module('starter.controllers', [])
 
 						})
 							.error(function(err,status,headers,config){
-							console.log(err);
+								$timeout(function () {
+									$ionicLoading.hide();
+									console.log(err);
+								}, 1000);
+
 						});
 					 
 					} else {
@@ -660,8 +719,12 @@ angular.module('starter.controllers', [])
 						console.log(data);
 
 					})
-						.error(function(err,status,headers,config){
-						console.log(err);
+					.error(function(err,status,headers,config){
+						$timeout(function () {
+							$ionicLoading.hide();
+							console.log(err);
+						}, 1000);
+
 					});
 				 
 				} else {
@@ -742,8 +805,12 @@ angular.module('starter.controllers', [])
 					}, 1000);
 					console.log(data);
 				})
-					.error(function(err,status,headers,config){
-					console.log(err);
+				.error(function(err,status,headers,config){
+					$timeout(function () {
+						$ionicLoading.hide();
+						console.log(err);
+					}, 1000);
+
 				});
 
 			}else{
@@ -835,7 +902,10 @@ angular.module('starter.controllers', [])
 
 			})
 			.error(function(err){
-				console.log(err);
+				$timeout(function () {
+					$ionicLoading.hide();
+					console.log(err);
+				}, 1000);
 			});
 		}
 
@@ -881,8 +951,11 @@ angular.module('starter.controllers', [])
 						}, 1000);
 						
 					})
-						.error(function(err,status,headers,config){
-						console.log(err);
+					.error(function(err,status,headers,config){
+						$timeout(function () {
+							$ionicLoading.hide();
+							console.log(err);
+						}, 1000);
 					});
 				 
 				} else {
@@ -929,8 +1002,11 @@ angular.module('starter.controllers', [])
 						}, 1000);
 						
 					})
-						.error(function(err,status,headers,config){
-						console.log(err);
+					.error(function(err,status,headers,config){
+						$timeout(function () {
+							$ionicLoading.hide();
+							console.log(err);
+						}, 1000);
 					});
 				 
 				} else {
@@ -984,7 +1060,10 @@ angular.module('starter.controllers', [])
 
 			})
 			.error(function(err){
-				console.log(err);
+				$timeout(function () {
+					$ionicLoading.hide();
+					console.log(err);
+				}, 1000);
 			});
 		} 
 

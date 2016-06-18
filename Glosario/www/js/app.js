@@ -6,14 +6,12 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 
-angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.controllers','starter.services'])
+angular.module('starter', ['ionic','GoogleLoginService','ionic-modal-select','starter.controllers','starter.services'])
 
   .config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
-  $stateProvider
+    $stateProvider
 
-
-      // setup an abstract state for the tabs directive
     .state('tab', {
       url: "/tab",
       abstract: true,
@@ -133,7 +131,7 @@ angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.co
   $urlRouterProvider.otherwise('/tab/inicio');
 
   })
-
+  /*
   .config(function($authProvider) {
 
     $authProvider.tokenName = "token";
@@ -160,6 +158,7 @@ angular.module('starter', ['ionic','satellizer','ionic-modal-select','starter.co
       storageType: 'localStorage',
     });
   })
+  */
 
   .run(function($ionicPlatform, $http) {
 

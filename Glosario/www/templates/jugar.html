@@ -17,11 +17,11 @@
       <div class="padding text-center">
 
         <label class="item item-input">
-          <input type="text" placeholder="Escribe el término" class="text-center" style="font-size:1.5em;" ng-model="miRespuesta">
+          <input type="text" placeholder="Escribe el término" class="text-center" style="font-size:1.3em;" ng-model="miRespuesta.input">
         </label>
         <br/>
         <div>
-          <button class="button button-light" ng-model="miRespuesta" ng-click="comprobar(miRespuesta, adivinaTermino.termino)">
+          <button class="button button-light" ng-click="comprobar(miRespuesta, adivinaTermino.termino)">
             ¡Probar Suerte!
           </button>
         </div>

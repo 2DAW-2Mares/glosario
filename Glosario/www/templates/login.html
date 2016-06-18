@@ -8,7 +8,7 @@
       </div>
 
       <div id="markdown1" class="titulo1"><h1>Bienvenido a <b>Glosario</b></h1></div>
-     
+<!-- 
       <div style="width: 100%;text-align: center">
           <div ng-if="!isAuthenticated()">
               <button ng-click="authenticate('google')" class="button icon-left ion-social-googleplus">
@@ -34,19 +34,18 @@
           </pre>
 
       </div>
-<!--  
+-->
       <br/>
 
       <div style="width: 100%;text-align: center">
-        <button ng-click="login();" class="button">
-            Login Via Google
-        </button>                        
-        <br/>
-        <pre>
-        {{google_data|json}}
-        </pre>
-      </div>
--->
+                <button ng-click="login();" class="button">
+                    Login Via Google
+                </button>                        
+                <br/>
+                <pre>
+                {{google_data|json}}
+                </pre>
+            </div>
 
   </ion-content>
 </ion-view>
