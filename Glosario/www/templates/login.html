@@ -1,13 +1,27 @@
 <!-- Pantalla de login -->
 
 <ion-view id="login" title="Login">
-    <ion-content class="fondo1 has-header padding text-center">
+    <ion-content class="fondo1 has-header padding">
      
-      <div>
-        <img class="logo centerme" ng-src="img/logotipo.png" class="fullscreen-image"/>
-      </div>
+    <div class="padding text-center" ng-model="google_data">
 
-      <div id="markdown1" class="titulo1"><h1>Bienvenido a <b>Glosario</b></h1></div>
+      <img class="foto_perfil" src="{{google_data.picture}}"></img>
+
+      <div class="titulo4"><h3>{{google_data.name}}</h3></div>
+ 
+      <div class="titulo4"><h3>{{google_data.email}}</h3></div>
+    </div>
+
+    <div style="width: 100%;text-align: center">
+      <button ng-click="login();" class="button icon-left ion-social-googleplus">
+        &nbsp;&nbsp;Login Via Google
+      </button>                       
+    </div>
+
+  </ion-content>
+</ion-view>
+
+
 <!-- 
       <div style="width: 100%;text-align: center">
           <div ng-if="!isAuthenticated()">
@@ -35,17 +49,3 @@
 
       </div>
 -->
-      <br/>
-
-      <div style="width: 100%;text-align: center">
-                <button ng-click="login();" class="button">
-                    Login Via Google
-                </button>                        
-                <br/>
-                <pre>
-                {{google_data|json}}
-                </pre>
-            </div>
-
-  </ion-content>
-</ion-view>

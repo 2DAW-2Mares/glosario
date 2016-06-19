@@ -12,6 +12,11 @@
     font-size: 1.5em;
 }
 
+.titulo4 h3{
+    color: #fff;
+    font-size: 1.2em;
+}
+
 .centerme {
     margin: 0 auto;
 }
@@ -22,9 +27,16 @@
     width: 200px;
 }
 
+.foto_perfil{
+    margin-top: 20px;
+    margin-bottom: 5%;
+    width: 200px;
+}
+
 .concepto_definicion{
     font-size: 0.85em;
-    margin-right: 8.5%;
+    text-align: justify;
+    width: 86%;
 }
 
 .icono_derecha{
@@ -52,4 +64,8 @@
 
 .defDenun{
     margin-top: 15px;
+}
+
+.correcto{
+    font-size: 4em;
 }

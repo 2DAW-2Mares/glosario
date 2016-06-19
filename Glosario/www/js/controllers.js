@@ -43,6 +43,8 @@ angular.module('starter.controllers', [])
   	})
 
   	.controller('inicioCtrl', function ($scope, $http, $ionicModal, $location) {
+
+  		$http.defaults.headers.common.Authorization = 'Basic YWRtaW46YWRtaW4xMjM0';
   	
   		/*-- Seleccion de Opciones --*/
 
@@ -67,7 +69,7 @@ angular.module('starter.controllers', [])
      })
 
 
-  	.controller('playCtrl', function ($scope, $http, $ionicModal, $ionicLoading, $timeout, $ionicPopup, rutaProyecto ) {
+  	.controller('playCtrl', function ($scope, $http, $ionicModal, $location, $ionicLoading, $timeout, $ionicPopup, rutaProyecto ) {
 		
   		/* Código Jugar */
 
@@ -131,29 +133,22 @@ angular.module('starter.controllers', [])
 							if(data == true){
 
 								var alertPopup = $ionicPopup.alert({
-									title: '¡Correcto!',
-									template: 'Enhorabuena, tu respuesta es correcta, pulsa "siguiente" para continuar.',
+									templateUrl: 'templates/correcto.html',
 									okText: 'Siguiente',
-									okType: 'button-positive'
+									okType: 'button-balanced'
 								});
 			
 								$scope.getPlay();
 			
 							}else{
 
-								var confirmPopup = $ionicPopup.confirm({
-									title: '¡Incorrecto!',
-									template: 'Tu respuesta no es correcta, pulsa "reintentar" para probar suerte con un nuevo término.',
-									okText: 'Reintentar',
-									okType: 'button-dark'
+								var alertPopup = $ionicPopup.alert({
+									templateUrl: 'templates/incorrecto.html',
+									okText: 'Terminar',
+									okType: 'button-assertive'
 								});
 
-								confirmPopup.then(function(res) {
-									if(res) {
-										$scope.getPlay();
-									}
-								});
-
+								$location.path('/tab/inicio');
 							}
 
 						}, 1000);
@@ -429,6 +424,7 @@ angular.module('starter.controllers', [])
 					$ionicLoading.hide();
 
 					$scope.definiciones = data;
+					console.log(data);
 
 					if(data){
 						if($scope.definiciones!=0){

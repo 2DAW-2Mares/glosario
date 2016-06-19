@@ -162,7 +162,7 @@ angular.module('starter', ['ionic','GoogleLoginService','ionic-modal-select','st
 
   .run(function($ionicPlatform, $http) {
 
-    $http.defaults.headers.common.Authorization = 'Basic YWRtaW46YWRtaW4xMjM0';
+    /*$http.defaults.headers.common.Authorization = 'Basic YWRtaW46YWRtaW4xMjM0';*/
 
     $ionicPlatform.ready(function() {
 
