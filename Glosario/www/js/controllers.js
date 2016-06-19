@@ -44,7 +44,7 @@ angular.module('starter.controllers', [])
 
   	.controller('inicioCtrl', function ($scope, $http, $ionicModal, $location) {
 
-  		$http.defaults.headers.common.Authorization = 'Basic YWRtaW46YWRtaW4xMjM0';
+  		/*$http.defaults.headers.common.Authorization = 'Basic YWRtaW46YWRtaW4xMjM0';*/
   	
   		/*-- Seleccion de Opciones --*/
 
